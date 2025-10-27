@@ -2,6 +2,8 @@
 node_modules/
 **/node_modules/
 
+SETUP.md
+
 # Firebase
 .firebase/
 *-debug.log

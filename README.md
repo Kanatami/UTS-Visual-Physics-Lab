@@ -87,7 +87,6 @@ midterm-VPL/
 │   └── styles/
 │       └── base.css
 ├── README.md
-├── SETUP.md
 ├── firebase.json
 └── firestore.indexes.json
 ```
