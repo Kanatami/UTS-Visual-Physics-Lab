@@ -1,4 +1,3 @@
-// server.js - Standalone server for Railway deployment
 const express = require('express');
 const cors = require('cors');
 const admin = require('firebase-admin');
@@ -6,18 +5,15 @@ const admin = require('firebase-admin');
 // Initialize Firebase Admin
 const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT 
   ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
-  : require('./serviceAccountKey.json'); // Fallback for local dev
+  : require('./serviceAccountKey.json'); 
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
 const db = admin.firestore();
-
-// Create Express app
 const app = express();
 
-// Middleware
 app.use(cors({ origin: true }));
 app.use(express.json());
 
@@ -39,7 +35,7 @@ async function authenticate(req, res, next) {
   }
 }
 
-// Health check
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
@@ -122,7 +118,7 @@ app.get('/api/quiz-results', authenticate, async (req, res) => {
   }
 });
 
-// Swagger UI (optional)
+// Swagger UI
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('yaml');
 const fs = require('fs');
