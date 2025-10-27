@@ -10,49 +10,22 @@
         id: "proj1",
         text: "Which angle maximizes projectile range R? (no air resistance, h₀ = 0)",
         options: ["30°", "45°", "60°", "90°"],
-        answer: 1
+        answer: 1,
+        explanation: "45° gives maximum range because sin(2θ) is maximum at θ=45°, where sin(90°)=1."
       },
       {
         id: "proj2",
-        text: "In y(t)=h₀+v₀sinθ·t−(1/2)g t² with upward positive, what is the sign of g?",
-        options: ["Positive", "Negative", "Depends on initial conditions", "Zero"],
-        answer: 1
+        text: "In projectile motion without air resistance, the horizontal velocity component is:",
+        options: ["Increasing with time", "Decreasing with time", "Constant", "Parabolic"],
+        answer: 2,
+        explanation: "Horizontal velocity remains constant because there is no horizontal acceleration (no air resistance)."
       },
       {
         id: "proj3",
-        text: "In projectile motion without air resistance, the horizontal velocity component is:",
-        options: ["Increasing with time", "Decreasing with time", "Constant", "Parabolic"],
-        answer: 2
-      },
-      {
-        id: "proj4",
-        text: "A projectile launched at 20 m/s at 30° has a horizontal velocity component of:",
-        options: ["10 m/s", "17.3 m/s", "20 m/s", "10√3 m/s"],
-        answer: 1
-      },
-      {
-        id: "proj5",
         text: "At the highest point of projectile motion, the vertical velocity component is:",
         options: ["Maximum", "Zero", "Negative maximum", "Equal to initial velocity"],
-        answer: 1
-      },
-      {
-        id: "proj6",
-        text: "For the same initial speed, launch angles of 45°+α and 45°-α produce:",
-        options: ["45°+α travels farther", "45°-α travels farther", "Same range", "Depends on speed"],
-        answer: 2
-      },
-      {
-        id: "proj7",
-        text: "With g=9.8 m/s², an object thrown vertically at 19.6 m/s reaches maximum height in:",
-        options: ["~1.0 s", "~2.0 s", "~3.0 s", "~4.0 s"],
-        answer: 1
-      },
-      {
-        id: "proj8",
-        text: "The trajectory of projectile motion is parabolic because:",
-        options: ["Horizontal motion is uniform", "Vertical motion is uniformly accelerated", "Both combined", "Air resistance"],
-        answer: 2
+        answer: 1,
+        explanation: "At the highest point, vertical velocity becomes zero before the projectile starts falling."
       }
     ],
     circular: [
@@ -60,87 +33,45 @@
         id: "circ1",
         text: "In uniform circular motion, velocity and acceleration vectors are:",
         options: ["Parallel", "Antiparallel", "Perpendicular", "At 45°"],
-        answer: 2
+        answer: 2,
+        explanation: "Velocity is tangent to the circle, while centripetal acceleration points toward the center, making them perpendicular."
       },
       {
         id: "circ2",
         text: "For circular motion with radius r and speed v, centripetal acceleration magnitude is:",
         options: ["v/r", "v²/r", "vr", "v/r²"],
-        answer: 1
+        answer: 1,
+        explanation: "Centripetal acceleration a = v²/r is derived from the change in velocity direction."
       },
       {
         id: "circ3",
-        text: "The relationship between angular velocity ω and period T is:",
-        options: ["ω = T", "ω = 2π/T", "ω = πT", "ω = T/2π"],
-        answer: 1
-      },
-      {
-        id: "circ4",
         text: "In uniform circular motion, which quantity remains constant?",
         options: ["Velocity", "Acceleration", "Speed", "Direction"],
-        answer: 2
-      },
-      {
-        id: "circ5",
-        text: "A particle moves in a circle of radius 2m with period 4s. Its speed is:",
-        options: ["π m/s", "2π m/s", "π/2 m/s", "4π m/s"],
-        answer: 0
-      },
-      {
-        id: "circ6",
-        text: "Centripetal force always points:",
-        options: ["Tangent to circle", "Toward center", "Away from center", "Upward"],
-        answer: 1
-      },
-      {
-        id: "circ7",
-        text: "If angular velocity doubles, centripetal acceleration becomes:",
-        options: ["2 times", "4 times", "1/2 times", "Unchanged"],
-        answer: 1
+        answer: 2,
+        explanation: "Speed (magnitude of velocity) remains constant, but velocity direction continuously changes."
       }
     ],
     energy: [
       {
-        id: "ener1",
-        text: "Gravitational potential energy of mass m at height h is (g = acceleration):",
-        options: ["mgh", "mg/h", "mh/g", "m/gh"],
-        answer: 0
+        id: "energy1",
+        text: "Kinetic energy is proportional to:",
+        options: ["velocity", "velocity²", "mass²", "√velocity"],
+        answer: 1,
+        explanation: "KE = ½mv², so kinetic energy is proportional to the square of velocity."
       },
       {
-        id: "ener2",
-        text: "The kinetic energy formula is:",
-        options: ["mv", "mv²", "(1/2)mv²", "2mv"],
-        answer: 2
+        id: "energy2",
+        text: "Potential energy at height h (mass m, gravity g) is:",
+        options: ["mgh", "mg/h", "mh/g", "m²gh"],
+        answer: 0,
+        explanation: "Gravitational potential energy PE = mgh, where h is height above reference point."
       },
       {
-        id: "ener3",
-        text: "Mechanical energy is conserved when:",
-        options: ["Friction is present", "Only conservative forces act", "Velocity is constant", "Acceleration is constant"],
-        answer: 1
-      },
-      {
-        id: "ener4",
-        text: "When velocity doubles, kinetic energy becomes:",
-        options: ["2 times", "4 times", "1/2 times", "√2 times"],
-        answer: 1
-      },
-      {
-        id: "ener5",
-        text: "For a freely falling object, total mechanical energy:",
+        id: "energy3",
+        text: "In a conservative system, total mechanical energy:",
         options: ["Increases", "Decreases", "Remains constant", "Becomes zero"],
-        answer: 2
-      },
-      {
-        id: "ener6",
-        text: "Work-energy theorem states that work done equals change in:",
-        options: ["Potential energy", "Kinetic energy", "Total energy", "Momentum"],
-        answer: 1
-      },
-      {
-        id: "ener7",
-        text: "Power is defined as:",
-        options: ["Force × distance", "Work / time", "Energy × time", "Force / time"],
-        answer: 1
+        answer: 2,
+        explanation: "Energy conservation: total mechanical energy (KE + PE) remains constant without external forces."
       }
     ],
     all: []
@@ -190,19 +121,51 @@
   async function grade() {
     let correct = 0;
     const answers = {};
+    const detailedResults = [];
     
-    questions.forEach(q => {
+    questions.forEach((q, idx) => {
       const chosen = form.querySelector(`input[name="${q.id}"]:checked`);
       const chosenValue = chosen ? Number(chosen.value) : null;
       answers[q.id] = chosenValue;
-      if (chosen && chosenValue === q.answer) correct++;
+      const isCorrect = chosen && chosenValue === q.answer;
+      if (isCorrect) correct++;
+      
+      detailedResults.push({
+        questionNum: idx + 1,
+        question: q.text,
+        userAnswer: chosenValue !== null ? q.options[chosenValue] : 'Not answered',
+        correctAnswer: q.options[q.answer],
+        isCorrect: isCorrect,
+        explanation: q.explanation
+      });
     });
     
     const percentage = Math.round((correct / questions.length) * 100);
-    result.innerHTML = `<div class="card"><strong>${correct} / ${questions.length}</strong> correct (${percentage}%)</div>`;
+    
+    let resultsHTML = `<div class="card"><strong>${correct} / ${questions.length}</strong> correct (${percentage}%)</div>`;
+    
+    resultsHTML += `<div class="card" style="margin-top: 16px;">
+      <h3>Answer Review</h3>
+      ${detailedResults.map(r => `
+        <div style="padding: 12px; margin: 8px 0; border-left: 4px solid ${r.isCorrect ? '#4f7cff' : '#ff5d5d'}; background: ${r.isCorrect ? 'rgba(79, 124, 255, 0.05)' : 'rgba(255, 93, 93, 0.05)'}; border-radius: 8px;">
+          <div style="font-weight: 600; margin-bottom: 4px;">Q${r.questionNum}. ${r.question}</div>
+          <div style="margin: 4px 0;">
+            <span style="color: ${r.isCorrect ? '#4f7cff' : '#ff5d5d'};">Your answer: ${r.userAnswer}</span>
+            ${!r.isCorrect ? `<br><span style="color: #4f7cff;">Correct answer: ${r.correctAnswer}</span>` : ''}
+          </div>
+          <div style="margin-top: 8px; padding: 8px; background: rgba(0,0,0,0.02); border-radius: 6px; font-size: 14px;">
+            💡 ${r.explanation}
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+    
+    result.innerHTML = resultsHTML;
     
     if (window.saveQuizResultToCloud) {
       try {
+        result.innerHTML += `<div class="card" style="margin-top:8px;color:#6b7380">💾 Saving to database...</div>`;
+        
         const quizData = {
           category: currentCategory,
           score: correct,
@@ -213,10 +176,19 @@
         };
         
         await window.saveQuizResultToCloud(quizData);
-        result.innerHTML += `<div class="card" style="margin-top:8px;color:#4f7cff">✅ Result saved to database!</div>`;
+        
+        const lastCard = result.lastElementChild;
+        if (lastCard) {
+          lastCard.innerHTML = '✅ Result saved to database!';
+          lastCard.style.color = '#4f7cff';
+        }
       } catch (err) {
         console.error('Failed to save quiz result:', err);
-        result.innerHTML += `<div class="card" style="margin-top:8px;color:#ff5d5d">⚠️ Failed to save (${err.message})</div>`;
+        const lastCard = result.lastElementChild;
+        if (lastCard) {
+          lastCard.innerHTML = `⚠️ Failed to save (${err.message})`;
+          lastCard.style.color = '#ff5d5d';
+        }
       }
     }
   }
@@ -306,11 +278,12 @@
     
     if (isVisible) {
       historySection.style.display = 'none';
-      viewHistoryBtn.textContent = 'View History';
+      viewHistoryBtn.textContent = '📊 View History';
     } else {
       historySection.style.display = 'block';
-      viewHistoryBtn.textContent = 'Hide History';
+      viewHistoryBtn.textContent = '✖️ Hide History';
       historyList.innerHTML = '<p class="muted">Loading...</p>';
+      historySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       await loadHistory();
     }
   });

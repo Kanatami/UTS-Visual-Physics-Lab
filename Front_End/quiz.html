@@ -46,10 +46,20 @@
   </header>
 
   <main class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+      <div>
+        <h1 style="margin: 0;">Physics Quiz</h1>
+        <p class="muted" style="margin: 8px 0 0 0;">Select a category and test your knowledge</p>
+      </div>
+      <button id="viewHistory" class="btn" type="button" style="margin: 0;">📊 View History</button>
+    </div>
+
+    <section class="card" id="historySection" style="margin-bottom: 20px; display: none;">
+      <h2>Quiz History</h2>
+      <div id="historyList"></div>
+    </section>
+
     <section class="card">
-      <h1>Physics Quiz</h1>
-      <p class="muted">Select a category and test your knowledge</p>
-      
       <div class="category-selector" style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
         <button class="category-btn btn active" data-category="all">All Topics</button>
         <button class="category-btn btn" data-category="projectile">Projectile Motion</button>
@@ -61,14 +71,8 @@
       <div class="actions">
         <button id="submitQuiz" class="btn primary" type="button">Submit</button>
         <button id="resetQuiz" class="btn danger" type="button">Reset</button>
-        <button id="viewHistory" class="btn" type="button">View History</button>
       </div>
       <div id="quizResult" class="result"></div>
-    </section>
-
-    <section class="card" id="historySection" style="margin-top: 20px; display: none;">
-      <h2>Quiz History</h2>
-      <div id="historyList"></div>
     </section>
   </main>
 

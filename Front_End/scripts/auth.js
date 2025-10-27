@@ -36,10 +36,18 @@ function bindAuthUI(){
       if (loginBtn) loginBtn.style.display = "none";
       logoutBtn.style.display = "";
       userInfo.textContent = user.displayName || user.email || "(signed in)";
+      userInfo.style.cursor = "pointer";
+      userInfo.style.textDecoration = "underline";
+      userInfo.onclick = () => {
+        window.location.href = "history.html";
+      };
     } else {
       if (loginBtn) loginBtn.style.display = "";
       logoutBtn.style.display = "none";
       userInfo.textContent = "";
+      userInfo.style.cursor = "default";
+      userInfo.style.textDecoration = "none";
+      userInfo.onclick = null;
     }
   });
 }

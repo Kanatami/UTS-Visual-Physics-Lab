@@ -8,7 +8,8 @@
   },
 
   "firestore": {
-    "rules": "Back_End/firestore.rules" 
+    "rules": "Back_End/firestore.rules",
+    "indexes": "firestore.indexes.json"
   },
 
   "emulators": {

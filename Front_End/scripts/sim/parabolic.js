@@ -55,11 +55,14 @@
     init(container) {
       const wrap = el("div", "");
       wrap.style.display = "grid";
-      wrap.style.gridTemplateColumns = "340px 1fr";
-      wrap.style.gridTemplateRows = "1fr auto";
+      wrap.style.gridTemplateColumns = "380px 1fr";
+      wrap.style.gridTemplateRows = "auto auto";
       wrap.style.gap = "24px";
+      wrap.style.alignItems = "start";
 
-      const panel = el("div", "card"); panel.style.padding = "16px";
+      const panel = el("div", "card");
+      panel.style.padding = "20px";
+      panel.style.gridRow = "1 / 3";
       panel.append(el("h3", "", TITLE));
 
       const info = el("div", "info-box");
@@ -92,9 +95,8 @@
 
       const btnRow = el("div", "row"); btnRow.style.gap = "12px";
       const startBtn = el("button", "btn primary", "Start");
-      const resetBtn = el("button", "btn danger",  "Reset");
-      const saveBtn  = el("button", "btn",         "Save Only");
-      btnRow.append(startBtn, resetBtn, saveBtn);
+      const resetBtn = el("button", "btn danger", "Reset");
+      btnRow.append(startBtn, resetBtn);
       panel.append(btnRow);
 
       const zoomRow = el("div", "row"); zoomRow.style.gap = "8px"; zoomRow.style.marginTop = "16px";
@@ -104,13 +106,19 @@
       zoomRow.append(el("span", "", "Zoom:"), zoomInBtn, zoomOutBtn, resetViewBtn);
       panel.append(zoomRow);
 
-      const view = el("div", "card"); view.style.position = "relative";
-      const canvas = el("canvas"); canvas.style.width = "100%"; canvas.style.display = "block";
+      const view = el("div", "card");
+      view.style.position = "relative";
+      view.style.padding = "0";
+      view.style.overflow = "hidden";
+      view.style.minHeight = "520px";
+      const canvas = el("canvas");
+      canvas.style.width = "100%";
+      canvas.style.height = "520px";
+      canvas.style.display = "block";
       view.append(canvas);
       
       const infoBar = el("div", "card");
       Object.assign(infoBar.style, {
-        gridColumn: "1 / -1", 
         padding: "20px 24px",
         background: "#e0e5ec",
         display: "flex",
@@ -293,15 +301,11 @@
           running = false;
           const R = vx0 * T;
           draw(R, 0);
+          savedThisRun = true;
           
-          realtimeDiv.innerHTML =
-            `<strong>Completed</strong><br>` +
-            `Time: ${T.toFixed(2)} s<br>` +
-            `Range: ${R.toFixed(2)} m<br>` +
-            `h<sub>max</sub>: ${hMaxVal.toFixed(2)} m`;
-          
-          if (!savedThisRun && window.saveRunToCloud) {
+          if (window.saveRunToCloud) {
             window.saveRunToCloud({
+              simType: 'projectile',
               v0: v0cur, 
               angle: thetaDeg, 
               h0, 
@@ -309,7 +313,29 @@
               T, 
               R, 
               hMax: hMaxVal
-            }).catch(()=>{});
+            }).then(() => {
+              realtimeDiv.innerHTML =
+                `<strong>Simulation Complete!</strong><br>` +
+                `Time: ${T.toFixed(2)} s<br>` +
+                `Range: ${R.toFixed(2)} m<br>` +
+                `h<sub>max</sub>: ${hMaxVal.toFixed(2)} m<br><br>` +
+                `<span style="color: #10b981; font-weight: 600;">✅ Saved successfully!</span><br>` +
+                `<span style="font-size: 12px; color: #6b7280;">Click your username to view history</span>`;
+            }).catch(err => {
+              console.error('Failed to save:', err);
+              realtimeDiv.innerHTML =
+                `<strong>Simulation Complete!</strong><br>` +
+                `Time: ${T.toFixed(2)} s<br>` +
+                `Range: ${R.toFixed(2)} m<br>` +
+                `h<sub>max</sub>: ${hMaxVal.toFixed(2)} m<br><br>` +
+                `<span style="color: #f59e0b; font-weight: 600;">⚠️ Save failed</span>`;
+            });
+          } else {
+            realtimeDiv.innerHTML =
+              `<strong>Completed</strong><br>` +
+              `Time: ${T.toFixed(2)} s<br>` +
+              `Range: ${R.toFixed(2)} m<br>` +
+              `h<sub>max</sub>: ${hMaxVal.toFixed(2)} m`;
           }
           return;
         }
@@ -344,26 +370,9 @@
         draw(0, parseFloat(hS.input.value)); 
         realtimeDiv.innerHTML = `Ready to start<br>Press "Start" button`;
       }
-      async function saveOnly(){
-        recalc();
-        const R = (v0cur * Math.cos(deg2rad(thetaDeg))) * T;
-        if (window.saveRunToCloud) {
-          try {
-            await window.saveRunToCloud({ v0: v0cur, angle: thetaDeg, h0, g, T, R, hMax: hMaxVal });
-            realtimeDiv.innerHTML = 
-              `<strong>Saved</strong><br>` +
-              `Range: ${R.toFixed(2)} m<br>` +
-              `T: ${T.toFixed(2)} s<br>` +
-              `h<sub>max</sub>: ${hMaxVal.toFixed(2)} m`;
-          } catch { 
-            realtimeDiv.innerHTML = `<strong>Save failed</strong><br>Saved locally only`;
-          }
-        }
-      }
 
       startBtn.onclick = start;
       resetBtn.onclick = reset;
-      saveBtn.onclick  = saveOnly;
       
       zoomInBtn.onclick = () => {
         zoomLevel = Math.min(5, zoomLevel * 1.2);

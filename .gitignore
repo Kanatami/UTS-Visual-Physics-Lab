@@ -1,13 +1,13 @@
-# Node modules
+# Dependencies
 node_modules/
 **/node_modules/
 
 # Firebase
 .firebase/
+*-debug.log
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
-*-debug.log
 
 # Emulator data
 emulator-data/
@@ -32,6 +32,8 @@ Thumbs.db
 logs/
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Build outputs
 dist/
@@ -43,25 +45,11 @@ tmp/
 temp/
 *.tmp
 
-# Package locks (optional - コメント外すとチーム開発で除外)
+# Optional: Uncomment to exclude package locks in team development
 # package-lock.json
+# yarn.lock
 
-# Development notes (開発メモ - Gitに含めない場合)
-AUTHENTICATION_PLAN.md
-CONSOLE_ERRORS.md
-DATA_GUIDE.md
-DATA_STORAGE.md
-ERROR_FIXED.md
-FIXED.md
-IMPLEMENTATION_STEPS.md
-QUICK_CHECK.md
-SECURITY_EXPLAINED.md
-SETUP_JP.md
-setup.sh
-
-# Unused files
-Front_End/index-old.html
+# Project-specific: Deprecated/unused files
 Front_End/dashboard.html
-Front_End/README.md
 Front_End/assets/
-
+docs/

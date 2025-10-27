@@ -40,10 +40,6 @@
       padding: 24px;
       box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
     }
-    .feature-icon {
-      font-size: 36px;
-      margin-bottom: 12px;
-    }
     .feature-card h3 {
       margin: 12px 0;
       color: var(--accent);
@@ -128,24 +124,20 @@
 
     <div class="feature-grid">
       <div class="feature-card">
-        <div class="feature-icon">🚀</div>
         <h3>Interactive Simulations</h3>
-        <p>Visualize projectile motion and circular motion with real-time parameter adjustments and instant feedback.</p>
+        <p>Visualize projectile motion and circular motion with real-time parameter adjustments. Auto-saves your simulation data for future reference.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">📝</div>
         <h3>Knowledge Assessment</h3>
-        <p>Test your understanding with categorized quizzes covering projectile motion, circular motion, and energy concepts.</p>
+        <p>Test your understanding with quizzes covering projectile motion, circular motion, and energy concepts. Get instant feedback with detailed explanations.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">📚</div>
-        <h3>Learning Materials</h3>
-        <p>Access video tutorials and detailed explanations for uniform linear motion, projectile motion, and circular motion.</p>
+        <h3>Learning History</h3>
+        <p>Track your progress over time. View past quiz scores and simulation runs by clicking your username in the navigation bar.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">☁️</div>
         <h3>Cloud Integration</h3>
-        <p>Save your quiz results and simulation data to the cloud with Firebase authentication and Firestore database.</p>
+        <p>Secure user authentication with Google OAuth and email/password. All your data is safely stored in Firebase Firestore.</p>
       </div>
     </div>
 
@@ -163,14 +155,15 @@
     <div class="info-section">
       <h2>How to Use This Platform</h2>
       <ol>
-        <li><strong>Start with Simulations:</strong> Navigate to the Simulation page and choose between Projectile Motion or Circular Motion.</li>
-        <li><strong>Adjust Parameters:</strong> Use sliders to modify initial conditions (speed, angle, height, etc.) and observe how they affect the motion.</li>
-        <li><strong>Analyze Results:</strong> Review the real-time metrics displaying range, flight time, velocity components, and other key values.</li>
-        <li><strong>Watch Tutorials:</strong> Visit the Materials page to watch educational videos and read detailed explanations of physics concepts.</li>
-        <li><strong>Test Your Knowledge:</strong> Take quizzes to assess your understanding and track your progress over time.</li>
-        <li><strong>Save Your Progress:</strong> Sign in with your account to save quiz results and simulation data to the cloud.</li>
+        <li><strong>Sign Up/Sign In:</strong> Create an account or sign in with Google to save your progress.</li>
+        <li><strong>Run Simulations:</strong> Navigate to Simulation and choose Projectile Motion or Circular Motion. Adjust parameters and click "Start".</li>
+        <li><strong>Auto-Save:</strong> Simulations are automatically saved when completed. No need to click a save button!</li>
+        <li><strong>Take Quizzes:</strong> Test your knowledge with categorized quizzes. Get instant feedback with detailed explanations.</li>
+        <li><strong>Track Progress:</strong> Click your username in the navigation bar to view your quiz history and simulation runs.</li>
+        <li><strong>Learn from Materials:</strong> Visit the Materials page for video tutorials and detailed physics explanations.</li>
       </ol>
     </div>
+
 
     <div class="info-section">
       <h2>Key Physics Equations</h2>

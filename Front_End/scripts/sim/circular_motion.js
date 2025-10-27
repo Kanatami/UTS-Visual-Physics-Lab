@@ -64,13 +64,16 @@
     title: TITLE,
 
     init(container) {
-      // layout
       const wrap = el("div", "");
       wrap.style.display = "grid";
-      wrap.style.gridTemplateColumns = "340px 1fr";
+      wrap.style.gridTemplateColumns = "380px 1fr";
+      wrap.style.gridTemplateRows = "auto auto";
       wrap.style.gap = "24px";
+      wrap.style.alignItems = "start";
 
-      const panel = el("div", "card", ""); panel.style.padding = "16px";
+      const panel = el("div", "card", "");
+      panel.style.padding = "20px";
+      panel.style.gridRow = "1 / 3";
       const vS = sliderRow("v0", "Speed v", "m/s", 2, 60, 0.5, 25);
       const rS = sliderRow("r", "Radius r", "m", 5, 80, 1, 25);
       const bS = sliderRow("bank", "Bank angle θ", "deg", 0, 45, 0.5, 15);
@@ -104,8 +107,7 @@
       const btnRow = el("div", "row"); btnRow.style.gap = "12px";
       const startBtn = el("button", "btn primary", "Start");
       const resetBtn = el("button", "btn danger", "Reset");
-      const saveBtn  = el("button", "btn", "Save Only");
-      btnRow.append(startBtn, resetBtn, saveBtn);
+      btnRow.append(startBtn, resetBtn);
       
       const zoomRow = el("div", "row"); zoomRow.style.gap = "8px"; zoomRow.style.marginTop = "16px";
       const zoomInBtn = el("button", "btn", "🔍+");
@@ -116,8 +118,17 @@
       const status = el("div", "status"); status.style.marginTop = "12px";
       panel.append(btnRow, zoomRow, status);
 
-      const view = el("div", "card", ""); view.style.position = "relative";
-      const canvas = el("canvas"); canvas.style.width = "100%"; canvas.style.display = "block";
+      const view = el("div", "card", ""); 
+      view.style.position = "relative";
+      view.style.gridColumn = "2";
+      view.style.gridRow = "1";
+      
+      const canvas = el("canvas"); 
+      canvas.style.width = "100%"; 
+      canvas.style.minHeight = "520px";
+      canvas.style.height = "520px";
+      canvas.style.display = "block";
+      
       const hud = el("div", "hud");
       Object.assign(hud.style, {
         position:"absolute", left:"16px", top:"16px", padding:"12px 14px",
@@ -270,14 +281,25 @@
 
       async function saveResult(p, d) {
         const payload = {
-          v0: p.v, theta: p.bankDeg, h0: 0, g: p.g,
-          flightTime: d.lapTime,
-          range: 2 * Math.PI * p.r,
-          hMax: d.ac
+          simType: 'circular_motion',
+          v: p.v,
+          r: p.r,
+          bank: p.bankDeg,
+          mu: p.mu,
+          g: p.g,
+          lapTime: d.lapTime,
+          ac: d.ac,
+          omega: d.omega
         };
         if (window.saveRunToCloud) {
-          try { await window.saveRunToCloud(payload); setStatus("Saved to cloud."); }
-          catch { setStatus("Saved locally (cloud failed)."); }
+          try { 
+            await window.saveRunToCloud(payload); 
+            setStatus("✅ Saved successfully! Click your username to view history.");
+          }
+          catch (err) { 
+            console.error('Failed to save:', err);
+            setStatus("⚠️ Save failed."); 
+          }
         }
       }
 
@@ -292,7 +314,9 @@
           const dt = 1/60; t += dt; theta = (theta + d2.omega * dt) % (Math.PI * 2);
           draw(p2, d2);
           if (t >= d2.lapTime) {
-            running = false; setStatus("Completed 1 lap."); saveResult(p2, d2); return;
+            running = false; 
+            saveResult(p2, d2); 
+            return;
           }
           rafId = requestAnimationFrame(step);
         };
@@ -302,7 +326,6 @@
 
       startBtn.onclick = run;
       resetBtn.onclick = reset;
-      saveBtn.onclick  = () => { const p=params(), d=derived(p); saveResult(p,d); };
       
       zoomInBtn.onclick = () => {
         zoomLevel = Math.min(5, zoomLevel * 1.2);

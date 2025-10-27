@@ -1,185 +1,198 @@
 # Virtual Physics Lab
+**Created by**: Ryota Takenaka
 
-Interactive physics simulations for learning projectile motion, circular motion, and more.
+**Live Site**: https://visual-physics-lab.web.app
 
-🌐 **Live Demo**: https://visual-physics-lab.web.app
+## Overview
+Interactive web-based physics laboratory for learning classical mechanics through simulations and quizzes. Includes projectile (parabolic) motion and circular motion simulations, quizzes with scoring, and authenticated user history.
 
-## 🎯 Features
+## How to Run
 
-- **Interactive Simulations**: Projectile (Parabolic) Motion and Circular Motion with real-time visualization
-- **Zoom & Pan Controls**: Explore simulations with intuitive controls
-- **User Authentication**: Google OAuth and Email/Password login
-- **Data Persistence**: Save simulation results to Firestore
-- **Learning Materials**: Video tutorials and detailed explanations
-- **Quiz System**: Test your understanding of physics concepts
-- **Responsive Design**: Works on desktop and mobile devices
-
-## 🛠️ Technology Stack
-
-### Frontend
-- **HTML5, CSS3, JavaScript (ES6+)**
-- **Firebase Authentication** (Compat SDK v10.12.0)
-- **Canvas API** for physics visualizations
-- **Neumorphism Design System**
-
-### Backend
-- **Firebase Cloud Functions v2** (Node.js 20)
-- **Express.js** REST API
-- **Firestore Database**
-- **Firebase Hosting**
-
-### DevOps
-- **GitHub Actions** for CI/CD
-- **Firebase Emulator Suite** for local development
-
-## Project Structure
-
-```
-midterm-reorganized/
-├── Front_End/           # Static frontend files
-│   ├── index.html
-│   ├── simulation.html
-│   ├── quiz.html
-│   ├── about.html
-│   ├── auth.html
-│   ├── dashboard.html
-│   ├── scripts/         # JavaScript files
-│   ├── styles/          # CSS files
-│   ├── assets/          # Static assets
-│   ├── package.json
-│   └── README.md
-│
-└── Back_End/            # Firebase backend
-    ├── functions/       # Cloud Functions
-    │   ├── index.js
-    │   ├── openapi.yaml
-    │   └── package.json
-    ├── firebase.json
-    ├── firestore.rules
-    ├── .firebaserc
-    ├── .nvmrc
-    └── README.md
-```
-
-## Setup
-
-### Backend Setup
-
+### 1. Install Dependencies (Functions)
 ```bash
-cd Back_End
-npm install
-cd functions
+cd Back_End/functions
 npm install
 ```
 
-### Frontend Setup
-
+### 2. Start Locally with Firebase Emulator Suite
 ```bash
-cd Front_End
-npm install
-```
-
-## Development
-
-### Start Backend (Firebase Emulators)
-
-```bash
-cd Back_End
+cd ../
 firebase emulators:start
 ```
 
-This starts:
+**Default local ports** (from `firebase.json`):
+- Hosting:   http://localhost:5002
 - Functions: http://localhost:5001
 - Firestore: http://localhost:8090
-- Hosting: http://localhost:5002
+- Auth:      http://localhost:9099
 - Emulator UI: http://localhost:4000
 
-### Start Frontend (Optional - for standalone development)
-
+### 3. Deploy (Optional)
 ```bash
-cd Front_End
-npm run dev
-```
-
-Serves frontend at http://localhost:3000
-
-**Note:** When using Firebase emulators, the frontend is served via Firebase Hosting at http://localhost:5002
-
-## Deployment
-
-From the `Back_End` directory:
-
-```bash
-# Deploy everything (recommended for first deployment)
-firebase deploy
-
-# Deploy only functions
-firebase deploy --only functions
-
-# Deploy only hosting
+firebase deploy                  # all
 firebase deploy --only hosting
-
-# Deploy only Firestore rules
-firebase deploy --only firestore:rules
+firebase deploy --only functions
+firebase deploy --only firestore
 ```
 
-## 🚀 Automated Deployment (CI/CD)
+### 4. Optional: Standalone API Server (Railway/Local)
+Requires `FIREBASE_SERVICE_ACCOUNT` env (JSON) or `serviceAccountKey.json` in `Back_End/functions`
+```bash
+cd Back_End/functions
+node server.js
+```
+- Server: http://localhost:3000
+- API Docs: http://localhost:3000/api-docs
 
-This project uses GitHub Actions for automatic deployment:
+## ## Project Structure
+The following is the complete structure under `midterm-VPL/`. Files listed in `.gitignore` are excluded.
 
-1. **Push to main branch** → Automatically deploys to Firebase
-2. **Pull Request** → Runs tests and preview deployment
-3. **Status checks** → See deployment status in GitHub
+```
+midterm-VPL/
+├── .firebaserc
+├── .github/
+│   └── workflows/
+│       └── firebase-deploy.yml
+├── .gitignore
+├── Back_End/
+│   ├── .nvmrc
+│   ├── README.md
+│   ├── firestore.rules
+│   └── functions/
+│       ├── index.js
+│       ├── openapi.yaml
+│       ├── package-lock.json
+│       ├── package.json
+│       └── server.js
+├── Front_End/
+│   ├── about.html
+│   ├── auth.html
+│   ├── history.html
+│   ├── index.html
+│   ├── materials.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── quiz.html
+│   ├── scripts/
+│   │   ├── auth-email.js
+│   │   ├── auth.js
+│   │   ├── cloud.js
+│   │   ├── main.js
+│   │   ├── quiz.js
+│   │   └── sim/
+│   │       ├── circular_motion.js
+│   │       └── parabolic.js
+│   ├── signup.html
+│   ├── simulation.html
+│   └── styles/
+│       └── base.css
+├── README.md
+├── SETUP.md
+├── firebase.json
+└── firestore.indexes.json
+```
 
-### Setup GitHub Actions
+## ## API Endpoints
 
-1. **Get Firebase Service Account Key**:
-   ```bash
-   firebase init hosting:github
-   ```
-   This will guide you through setting up GitHub Actions.
+### Base URLs
+- **Production** (Functions v2 managed): https://api-zldmksklha-uc.a.run.app
+- **Local** (Emulators): http://localhost:5001/visual-physics-lab/us-central1/api
+- **Local** (Standalone server): http://localhost:3000/api
 
-2. **Manual Setup** (if needed):
-   - Go to [Firebase Console](https://console.firebase.google.com)
-   - Project Settings → Service Accounts → Generate New Private Key
-   - Add key as `FIREBASE_SERVICE_ACCOUNT` secret in GitHub repo settings
+**All endpoints require header**: `Authorization: Bearer <Firebase ID Token>`
 
-## 📦 Local Development
+### GET `/api/runs`
+Returns the authenticated user's simulation runs (max 50, desc).
 
-### Prerequisites
-- **Node.js 20+**
-- **Firebase CLI**: `npm install -g firebase-tools`
-- **Git**
+### GET `/api/runs/:id`
+Returns a single simulation run by ID (owner only).
 
-### Setup Steps
+### GET `/api/simulation-runs`
+Alias list of runs for the authenticated user (max 50, desc).
 
-1. **Clone repository**:
-   ```bash
-   git clone https://github.com/Kanatami/virtual-physics-lab.git
-   cd virtual-physics-lab
-   ```
+### POST `/api/runs`
+Create a simulation run. Body depends on `simType`.
 
-2. **Install dependencies**:
-   ```bash
-   cd Back_End/functions
-   npm install
-   ```
+**Example (projectile)**:
+```json
+{
+  "simType": "projectile",
+  "v0": 25.0,
+  "angle": 45.0,
+  "h0": 0.0,
+  "g": 9.81,
+  "T": 3.61,
+  "R": 63.77,
+  "hMax": 15.94
+}
+```
 
-3. **Login to Firebase**:
-   ```bash
-   firebase login
-   ```
+**Example (circular_motion)**:
+```json
+{
+  "simType": "circular_motion",
+  "v": 25.0,
+  "r": 50.0,
+  "bank": 15.0,
+  "mu": 0.3,
+  "g": 9.81,
+  "lapTime": 12.57,
+  "ac": 12.5,
+  "omega": 0.5
+}
+```
 
-4. **Start emulators**:
-   ```bash
-   cd ../  # Back to Back_End directory
-   firebase emulators:start
-   ```
+### POST `/api/quiz-results`
+Save a quiz result.
+```json
+{
+  "category": "projectile",
+  "score": 7,
+  "total": 9,
+  "percentage": 78,
+  "answers": { "q1": true }
+}
+```
 
-5. **Open browser**: http://localhost:5002
+### GET `/api/quiz-results`
+Returns the authenticated user's quiz results (max 50, desc).
 
-## API Documentation
+### Interactive API Docs
+- **Emulators**: http://localhost:5001/visual-physics-lab/us-central1/api/docs
+- **Production**: https://api-zldmksklha-uc.a.run.app/api/docs
+- **Standalone**: http://localhost:3000/api-docs
 
-When running, visit the API docs at:
-- Emulator: http://localhost:5001/{PROJECT_ID}/us-central1/api/docs
-- Production: https://asia-southeast2-{PROJECT_ID}.cloudfunctions.net/api/docs
+## Application Features
+
+## Application Features
+- **Authentication**: Google and Email/Password with Firebase Authentication
+- **Simulations**: Projectile and Circular motion with real-time visualization
+- **Quiz**: 9 questions across 3 categories with instant scoring
+- **History**: View past quiz scores and simulation runs
+- **Cloud Sync**: Firestore-backed persistence per user
+- **Responsive UI** with a simple neumorphism style
+
+## Troubleshooting
+- **Cannot connect to API**: Ensure emulators are running; check ports 5001/5002/8090/9099/4000
+- **Missing or invalid token**: Sign in via the app; pass Firebase ID token in Authorization header
+- **auth/unauthorized-domain**: Add your domain in Firebase Console → Authentication → Settings → Authorized domains
+- **Firebase config on frontend**: Update `Front_End/scripts/auth.js` with your Firebase config
+- **Port already in use**: Free the port or change it in `firebase.json`
+
+## Environment Requirements
+- Node.js 20+ and npm
+- Firebase CLI (`npm i -g firebase-tools`)
+- A Firebase project
+- Modern browser (Chrome/Firefox/Edge)
+
+## Documentation
+- **Setup (EN)**: `SETUP.md`
+- **Setup (JP)**: `docs/SETUP_JP.md`
+- **Authentication Plan**: `docs/AUTHENTICATION_PLAN.md`
+- **Data Model and Storage**: `docs/DATA_GUIDE.md`, `docs/DATA_STORAGE.md`
+- **Security**: `docs/SECURITY_EXPLAINED.md`
+
+## About
+Academic project for learning and demonstration purposes.
+
+**Last updated**: 2025-10-28

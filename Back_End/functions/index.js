@@ -57,24 +57,39 @@ router.get("/runs", authGuard, async (req, res) => {
 });
 
 router.post("/runs", authGuard, async (req, res) => {
-  const { v0, theta, h0, g, flightTime, range, hMax } = req.body || {};
-  for (const k of ["v0", "theta", "h0", "g", "flightTime", "range", "hMax"]) {
-    if (typeof req.body[k] !== "number") {
-      return res.status(400).json({ error: `Invalid field: ${k}` });
-    }
+  const body = req.body || {};
+  
+  if (body.simType === 'projectile') {
+    const { simType, v0, angle, h0, g, T, R, hMax } = body;
+    const docRef = await db.collection("runs").add({
+      userId: req.user.uid,
+      simType, v0, angle, h0, g, T, R, hMax,
+      createdAt: FieldValue.serverTimestamp()
+    });
+    const snap = await docRef.get();
+    const data = snap.data();
+    return res.status(201).json({
+      id: snap.id,
+      ...data,
+      createdAt: data.createdAt?.toDate?.()?.toISOString() || null
+    });
+  } else if (body.simType === 'circular_motion') {
+    const { simType, v, r, bank, mu, g, lapTime, ac, omega } = body;
+    const docRef = await db.collection("runs").add({
+      userId: req.user.uid,
+      simType, v, r, bank, mu, g, lapTime, ac, omega,
+      createdAt: FieldValue.serverTimestamp()
+    });
+    const snap = await docRef.get();
+    const data = snap.data();
+    return res.status(201).json({
+      id: snap.id,
+      ...data,
+      createdAt: data.createdAt?.toDate?.()?.toISOString() || null
+    });
+  } else {
+    return res.status(400).json({ error: "Invalid simType. Must be 'projectile' or 'circular_motion'" });
   }
-  const docRef = await db.collection("runs").add({
-    userId: req.user.uid,
-    v0, theta, h0, g, flightTime, range, hMax,
-    createdAt: FieldValue.serverTimestamp()
-  });
-  const snap = await docRef.get();
-  const data = snap.data();
-  res.status(201).json({
-    id: snap.id,
-    ...data,
-    createdAt: data.createdAt?.toDate?.()?.toISOString() || null
-  });
 });
 
 router.get("/runs/:id", authGuard, async (req, res) => {
@@ -120,6 +135,28 @@ router.get("/quiz-results", authGuard, async (req, res) => {
   const uid = req.user.uid;
   const snap = await db
     .collection("quizResults")
+    .where("userId", "==", uid)
+    .orderBy("createdAt", "desc")
+    .limit(50)
+    .get();
+
+  const items = snap.docs.map(d => {
+    const data = d.data();
+    return {
+      id: d.id,
+      ...data,
+      createdAt: data.createdAt && data.createdAt.toDate
+        ? data.createdAt.toDate().toISOString()
+        : null
+    };
+  });
+  res.json(items);
+});
+
+router.get("/simulation-runs", authGuard, async (req, res) => {
+  const uid = req.user.uid;
+  const snap = await db
+    .collection("runs")
     .where("userId", "==", uid)
     .orderBy("createdAt", "desc")
     .limit(50)
