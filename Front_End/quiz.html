@@ -26,14 +26,28 @@
 
   <main class="container">
     <section class="card">
-      <h1>Projectile Motion Quiz</h1>
-      <p class="muted">Add and edit questions in <code>scripts/quiz.js</code>.</p>
+      <h1>Physics Quiz</h1>
+      <p class="muted">Select a category and test your knowledge</p>
+      
+      <div class="category-selector" style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="category-btn btn active" data-category="all">All Topics</button>
+        <button class="category-btn btn" data-category="projectile">Projectile Motion</button>
+        <button class="category-btn btn" data-category="circular">Circular Motion</button>
+        <button class="category-btn btn" data-category="energy">Energy</button>
+      </div>
+
       <form id="quizForm" class="quiz-form"></form>
       <div class="actions">
-        <button id="submitQuiz" class="btn primary" type="button">Grade</button>
+        <button id="submitQuiz" class="btn primary" type="button">Submit</button>
         <button id="resetQuiz" class="btn danger" type="button">Reset</button>
+        <button id="viewHistory" class="btn" type="button">View History</button>
       </div>
       <div id="quizResult" class="result"></div>
+    </section>
+
+    <section class="card" id="historySection" style="margin-top: 20px; display: none;">
+      <h2>Quiz History</h2>
+      <div id="historyList"></div>
     </section>
   </main>
 

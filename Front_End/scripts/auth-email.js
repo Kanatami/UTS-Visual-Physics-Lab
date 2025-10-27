@@ -11,52 +11,39 @@ function getErrorMessage(errorCode) {
   return errorMessages[errorCode] || 'An error occurred';
 }
 
-// 新規登録
 window.registerWithEmail = async function(email, password) {
   try {
     const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
     const user = userCredential.user;
-    
-
     await saveUserProfile(user, 'password');
-    
     return user;
   } catch (error) {
-    console.error('Registration error:', error);
     throw new Error(getErrorMessage(error.code));
   }
 };
 
-// ログイン
 window.loginWithEmail = async function(email, password) {
   try {
     const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
     const user = userCredential.user;
-    
     await updateLastLogin(user.uid);
-    
     return user;
   } catch (error) {
-    console.error('Login error:', error);
     throw new Error(getErrorMessage(error.code));
   }
 };
-
 
 window.resetPassword = async function(email) {
   try {
     await firebase.auth().sendPasswordResetEmail(email);
     return true;
   } catch (error) {
-    console.error('Password reset error:', error);
     throw new Error(getErrorMessage(error.code));
   }
 };
 
-
 async function saveUserProfile(user, authProvider) {
   const db = firebase.firestore();
-  
   try {
     await db.collection('users').doc(user.uid).set({
       email: user.email,
@@ -70,16 +57,13 @@ async function saveUserProfile(user, authProvider) {
   }
 }
 
-
 async function updateLastLogin(uid) {
   const db = firebase.firestore();
-  
   try {
     await db.collection('users').doc(uid).update({
       lastLogin: firebase.firestore.FieldValue.serverTimestamp()
     });
   } catch (error) {
-    console.log('Creating user profile...');
     const user = firebase.auth().currentUser;
     if (user) {
       await saveUserProfile(user, 'password');
@@ -87,13 +71,13 @@ async function updateLastLogin(uid) {
   }
 }
 
-
 window.validatePassword = function(password) {
   if (password.length < 6) {
     return 'Password must be at least 6 characters';
   }
   return null;
 };
+
 window.validateEmail = function(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {

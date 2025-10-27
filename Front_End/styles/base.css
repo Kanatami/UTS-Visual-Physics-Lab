@@ -49,6 +49,7 @@ body{
 .site-header .hero{margin-top:16px}
 
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.nav .actions{margin-top:0;align-items:center}
 .btn{
   border:none;cursor:pointer;padding:12px 16px;border-radius:14px;font-weight:600;
   background:var(--card);color:var(--tx);
@@ -212,3 +213,48 @@ main.container {
 
 #sim-root .card .hud { margin-top: 8px; }
 #sim-root .card .row { margin: 14px 0; }
+
+/* カテゴリーボタンのスタイル */
+.category-btn {
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.category-btn:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.category-btn.active {
+  opacity: 1;
+  color: #fff;
+  background: linear-gradient(180deg, #6f92ff, var(--accent)) !important;
+  box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
+}
+
+/* クイズフォームのスタイル */
+.quiz-form .options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.quiz-form .option {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--bg);
+}
+
+.quiz-form .option:hover {
+  background: rgba(79, 124, 255, 0.1);
+}
+
+.quiz-form .option input[type="radio"] {
+  margin-right: 10px;
+  cursor: pointer;
+}

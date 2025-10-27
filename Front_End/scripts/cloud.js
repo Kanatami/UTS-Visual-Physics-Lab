@@ -33,9 +33,7 @@ window.saveRunToCloud = async (raw) => {
   return text ? JSON.parse(text) : null;
 };
 
-window.saveQuizToCloud = async (data) => {
-  const { score, total } = data;
-
+window.saveQuizResultToCloud = async (data) => {
   const user = firebase.auth().currentUser;
   if (!user) throw new Error("Not authenticated");
   const token = await user.getIdToken(true);
@@ -46,13 +44,33 @@ window.saveQuizToCloud = async (data) => {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`,
     },
-    body: JSON.stringify({ score, total }),
+    body: JSON.stringify(data),
   });
 
   const text = await res.text().catch(()=> "");
   if (!res.ok) {
-    console.error("saveQuiz failed", res.status, text);
+    console.error("saveQuizResult failed", res.status, text);
     throw new Error(text || `HTTP ${res.status}`);
   }
   return text ? JSON.parse(text) : null;
+};
+
+window.getQuizHistory = async () => {
+  const user = firebase.auth().currentUser;
+  if (!user) throw new Error("Not authenticated");
+  const token = await user.getIdToken(true);
+
+  const res = await fetch("/api/quiz-results", {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+  });
+
+  const text = await res.text().catch(()=> "");
+  if (!res.ok) {
+    console.error("getQuizHistory failed", res.status, text);
+    throw new Error(text || `HTTP ${res.status}`);
+  }
+  return text ? JSON.parse(text) : [];
 };

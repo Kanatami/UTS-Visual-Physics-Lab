@@ -90,16 +90,23 @@ router.get("/runs/:id", authGuard, async (req, res) => {
 });
 
 router.post("/quiz-results", authGuard, async (req, res) => {
-  const { score, total } = req.body || {};
+  const { category, score, total, percentage, answers, timestamp } = req.body || {};
+  
   if (!Number.isInteger(score) || !Number.isInteger(total)) {
     return res.status(400).json({ error: "score/total must be integers" });
   }
+  
   const docRef = await db.collection("quizResults").add({
     userId: req.user.uid,
+    category: category || "all",
     score,
     total,
+    percentage: percentage || Math.round((score / total) * 100),
+    answers: answers || {},
+    timestamp: timestamp || new Date().toISOString(),
     createdAt: FieldValue.serverTimestamp()
   });
+  
   const snap = await docRef.get();
   const data = snap.data();
   res.status(201).json({
@@ -107,6 +114,28 @@ router.post("/quiz-results", authGuard, async (req, res) => {
     ...data,
     createdAt: data.createdAt?.toDate?.()?.toISOString() || null
   });
+});
+
+router.get("/quiz-results", authGuard, async (req, res) => {
+  const uid = req.user.uid;
+  const snap = await db
+    .collection("quizResults")
+    .where("userId", "==", uid)
+    .orderBy("createdAt", "desc")
+    .limit(50)
+    .get();
+
+  const items = snap.docs.map(d => {
+    const data = d.data();
+    return {
+      id: d.id,
+      ...data,
+      createdAt: data.createdAt && data.createdAt.toDate
+        ? data.createdAt.toDate().toISOString()
+        : null
+    };
+  });
+  res.json(items);
 });
 
 // OpenAPI
