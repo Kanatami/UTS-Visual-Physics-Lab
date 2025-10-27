@@ -1,0 +1,21 @@
+{
+  "functions": { "source": "Back_End/functions" },
+
+  "hosting": {
+    "public": "Front_End",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [{ "source": "/api/**", "function": "api" }]
+  },
+
+  "firestore": {
+    "rules": "Back_End/firestore.rules" 
+  },
+
+  "emulators": {
+    "auth": { "port": 9099 },
+    "functions": { "port": 5001 },
+    "firestore": { "host": "127.0.0.1", "port": 8090 },
+    "hosting":   { "port": 5002 },
+    "ui":        { "enabled": true, "port": 4000 }
+  }
+}
