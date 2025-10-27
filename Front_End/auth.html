@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign In - Virtual Physics Lab</title>
+  <link rel="stylesheet" href="styles/base.css" />
+  <style>
+    .auth-container {
+      max-width: 480px;
+      margin: 40px auto;
+      padding: 32px;
+    }
+    .auth-divider {
+      text-align: center;
+      margin: 24px 0;
+      color: var(--muted);
+      position: relative;
+    }
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: 1px;
+      background: var(--shadow-dark);
+    }
+    .auth-divider::before { left: 0; }
+    .auth-divider::after { right: 0; }
+    .google-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .password-reset {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+    .password-reset a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .password-reset a:hover {
+      text-decoration: underline;
+    }
+    #msg {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      display: none;
+    }
+    #msg.success {
+      display: block;
+      background: #d4edda;
+      color: #155724;
+    }
+    #msg.error {
+      display: block;
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .btn, button {
+      display: inline-block !important;
+      visibility: visible !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- ページ読み込み確認 -->
+  <script>
+    console.log('auth.html loaded');
+  </script>
+  <header class="site-header container">
+    <nav class="nav">
+      <a class="brand" href="index.html">Virtual Physics Lab</a>
+      <div class="nav-links">
+        <a href="simulation.html">Simulation</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="materials.html">Materials</a>
+        <a href="about.html">About</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card auth-container">
+      <h1 style="text-align:center; margin-bottom:24px">Sign In</h1>
+
+      <button id="googleLoginBtn" class="btn primary google-btn">
+        <span>🔐</span>
+        <span>Sign in with Google</span>
+      </button>
+
+      <div class="auth-divider">または</div>
+
+      <!-- Email/Password Form -->
+      <form id="emailAuthForm" class="controls">
+        <div class="field">
+          <label>Email</label>
+          <input id="emailInput" name="email" type="email" placeholder="your@email.com" required />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input id="passwordInput" name="password" type="password" placeholder="••••••" minlength="6" required />
+        </div>
+        <div class="actions">
+          <button class="btn primary" type="submit" id="loginBtn">Login</button>
+          <button class="btn" type="button" id="signupBtn">Sign Up</button>
+        </div>
+      </form>
+
+      <div class="password-reset">
+        <a href="#" id="resetPasswordLink">Forgot password?</a>
+      </div>
+
+      <div id="msg"></div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <small>© Virtual Physics Lab</small>
+  </footer>
+
+  <!-- Firebase Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="scripts/auth.js"></script>
+  <script src="scripts/auth-email.js"></script>
+
+  <script>
+    console.log('Inline script started');
+    console.log('Firebase app initialized:', !!firebase.apps.length);
+    
+    const form = document.getElementById("emailAuthForm");
+    const msg = document.getElementById("msg");
+    const googleLoginBtn = document.getElementById("googleLoginBtn");
+    const loginBtn = document.getElementById("loginBtn");
+    const signupBtn = document.getElementById("signupBtn");
+    const resetPasswordLink = document.getElementById("resetPasswordLink");
+
+    console.log('Elements found:', {
+      form: !!form,
+      msg: !!msg,
+      googleLoginBtn: !!googleLoginBtn,
+      loginBtn: !!loginBtn,
+      signupBtn: !!signupBtn,
+      resetPasswordLink: !!resetPasswordLink
+    });
+
+
+    function showMessage(text, type = 'error') {
+      msg.textContent = text;
+      msg.className = type;
+      setTimeout(() => {
+        msg.className = '';
+        msg.style.display = 'none';
+      }, 5000);
+    }
+
+
+    googleLoginBtn.addEventListener("click", async () => {
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const result = await firebase.auth().signInWithPopup(provider);
+
+        const db = firebase.firestore();
+        await db.collection('users').doc(result.user.uid).set({
+          email: result.user.email,
+          displayName: result.user.displayName,
+          authProvider: 'google.com',
+          lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        showMessage('Success! Redirecting...', 'success');
+        setTimeout(() => {
+          location.href = 'index.html';
+        }, 1000);
+      } catch (error) {
+        showMessage('Google login failed: ' + error.message);
+      }
+    });
+
+    // Email ログイン
+    loginBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+
+      const emailError = validateEmail(email);
+      if (emailError) {
+        showMessage(emailError);
+        return;
+      }
+
+      try {
+        await loginWithEmail(email, password);
+        showMessage('Login successful! Redirecting...', 'success');
+        setTimeout(() => {
+          location.href = 'index.html';
+        }, 1000);
+      } catch (error) {
+        showMessage(error.message);
+      }
+    });
+
+
+    signupBtn.addEventListener("click", async () => {
+      console.log('Sign up button clicked');
+      const email = form.email.value.trim();
+      const password = form.password.value;
+
+      console.log('Email:', email);
+      console.log('Password length:', password.length);
+
+      // バリデーション
+      const emailError = validateEmail(email);
+      if (emailError) {
+        console.log('Email validation error:', emailError);
+        showMessage(emailError);
+        return;
+      }
+
+      const passwordError = validatePassword(password);
+      if (passwordError) {
+        console.log('Password validation error:', passwordError);
+        showMessage(passwordError);
+        return;
+      }
+
+      console.log('Validation passed, calling registerWithEmail...');
+      try {
+        await registerWithEmail(email, password);
+        showMessage('Registration successful! Redirecting...', 'success');
+        setTimeout(() => {
+          location.href = 'index.html';
+        }, 1000);
+      } catch (error) {
+        console.error('Registration failed:', error);
+        showMessage(error.message);
+      }
+    });
+
+    // パスワードリセット
+    resetPasswordLink.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const email = form.email.value.trim();
+
+      if (!email) {
+        showMessage('Please enter your email address');
+        return;
+      }
+
+      try {
+        await resetPassword(email);
+        showMessage('Password reset email sent successfully', 'success');
+      } catch (error) {
+        showMessage(error.message);
+      }
+    });
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user && !msg.classList.contains('success')) {
+        location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>

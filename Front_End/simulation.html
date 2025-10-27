@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simulation - Virtual Physics Lab</title>
+  <link rel="stylesheet" href="styles/base.css" />
+</head>
+<body>
+  <header class="site-header container">
+    <nav class="nav">
+      <a class="brand" href="index.html">Virtual Physics Lab</a>
+      <div class="nav-links">
+        <a href="simulation.html">Simulation</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="materials.html">Materials</a>
+        <a href="about.html">About</a>
+      </div>
+      <div class="actions">
+        <a id="loginBtn" href="auth.html" class="btn">Sign In</a>
+        <button id="logoutBtn" class="btn danger" style="display:none;">Sign Out</button>
+        <span id="userInfo" class="muted"></span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div id="sim-root"></div>
+  </main>
+
+  <footer class="container footer">
+    <small>© Virtual Physics Lab</small>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="scripts/auth.js"></script>
+  <script src="scripts/cloud.js"></script>
+
+
+  <script>
+    window.SimRegistry = window.SimRegistry || {};
+    window.registerSimulation = (def) => { window.SimRegistry[def.key] = def; };
+  </script>
+
+
+  <script src="scripts/sim/parabolic.js" defer></script>
+  <script src="scripts/sim/circular_motion.js" defer></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const key = new URLSearchParams(location.search).get('sim') || 'projectile';
+      const def = window.SimRegistry[key] || window.SimRegistry['projectile'];
+      const mount = document.getElementById('sim-root');
+      const api = def.init(mount);
+    });
+  </script>
+</body>
+</html>

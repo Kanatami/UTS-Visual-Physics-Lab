@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Learning Materials - Virtual Physics Lab</title>
+  <link rel="stylesheet" href="styles/base.css" />
+  <style>
+    .materials-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 48px;
+      padding-top: 24px;
+    }
+
+    .page-header h1 {
+      font-size: clamp(32px, 5vw, 42px);
+      margin: 0 0 12px;
+      color: var(--tx);
+    }
+
+    .page-header p {
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    /* トピック選択 */
+    .topic-selector {
+      margin-bottom: 32px;
+    }
+
+    .topic-selector label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 16px;
+      color: var(--tx);
+    }
+
+    .topic-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      color: var(--tx);
+      font-size: 16px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .topic-select:focus {
+      outline: none;
+      border-color: #9b59b6;
+    }
+
+    /* トピックカード */
+    .topic-card {
+      background: white;
+      border-radius: 12px;
+      padding: 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 32px;
+      overflow: hidden;
+      border-left: 4px solid #9b59b6;
+    }
+
+    .topic-card.hidden {
+      display: none;
+    }
+
+    .topic-title {
+      padding: 24px 32px;
+      margin: 0;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--tx);
+      background: #f8f9fa;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    /* ビデオセクション */
+    .section {
+      padding: 32px;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .section-icon {
+      font-size: 24px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #9b59b6;
+      margin: 0;
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 */
+      height: 0;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      margin-bottom: 16px;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+
+    .explanation {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid #9b59b6;
+      line-height: 1.7;
+    }
+
+    .explanation h4 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      color: var(--tx);
+    }
+
+    .explanation p {
+      margin: 0 0 16px;
+      color: var(--tx);
+    }
+
+    .explanation p:last-child {
+      margin-bottom: 0;
+    }
+
+
+    .characteristics {
+      margin: 20px 0;
+    }
+
+    .characteristics h4 {
+      margin-bottom: 16px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--tx);
+    }
+
+    .char-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .char-list li {
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .char-list li strong {
+      color: #9b59b6;
+      min-width: 180px;
+      font-weight: 600;
+    }
+
+
+    .formula-box {
+      background: #f8f9fa;
+      border: 2px solid #9b59b6;
+      padding: 24px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .formula-box h4 {
+      margin: 0 0 16px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--tx);
+    }
+
+    .formula {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 16px 0;
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 1px;
+      color: #9b59b6;
+    }
+
+    .formula-vars {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #ddd;
+    }
+
+    .formula-vars p {
+      margin: 8px 0;
+      padding-left: 20px;
+      color: var(--tx);
+    }
+
+    .formula-vars strong {
+      color: #9b59b6;
+      font-weight: 600;
+    }
+
+
+    .tips-section {
+      background: #f8f9fa;
+      padding: 24px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .tips-section h4 {
+      margin: 0 0 16px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--tx);
+    }
+
+    .tip-item {
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      background: white;
+      border-radius: 6px;
+      border-left: 3px solid #3498db;
+    }
+
+    .tip-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .tip-number {
+      font-weight: 700;
+      color: #3498db;
+      margin-right: 8px;
+    }
+
+
+    @media (max-width: 768px) {
+      .section {
+        padding: 24px 20px;
+      }
+
+      .topic-title {
+        padding: 20px 24px;
+        font-size: 24px;
+      }
+
+      .char-list li strong {
+        min-width: auto;
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .formula {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header container">
+    <nav class="nav">
+      <a class="brand" href="index.html">Virtual Physics Lab</a>
+      <div class="nav-links">
+        <a href="simulation.html">Simulation</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="materials.html" class="active">Materials</a>
+        <a href="about.html">About</a>
+      </div>
+      <div class="actions">
+        <a id="loginBtn" href="auth.html" class="btn">Sign In</a>
+        <button id="logoutBtn" class="btn danger" style="display:none;">Sign Out</button>
+        <span id="userInfo" class="muted"></span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="materials-container">
+    <div class="page-header">
+      <h1>Learning Materials</h1>
+      <p>Master physics concepts with video tutorials and detailed explanations</p>
+    </div>
+
+
+    <div class="topic-selector">
+      <label for="topicSelect">Select Material Topic</label>
+      <select id="topicSelect" class="topic-select">
+        <option value="glb">Uniform Linear Motion (GLB)</option>
+        <option value="projectile">Projectile Motion (Parabolic)</option>
+        <option value="circular">Uniform Circular Motion</option>
+      </select>
+    </div>
+
+
+    <div class="topic-card" id="topic-glb">
+      <h2 class="topic-title">
+        Uniform Linear Motion (GLB)
+      </h2>
+
+      <div class="section">
+        <h3 class="section-title">Learning Video</h3>
+        <div class="video-container">
+          <iframe 
+            src="https://www.youtube.com/embed/XIK8TYWzIPA" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+
+      <div class="section">
+        <h3 class="section-title">Explanation</h3>
+        <div class="explanation">
+          <p>Uniform Linear Motion (GLB) is the motion of an object along a straight path with constant velocity. Imagine you're driving a car on a straight highway and the speedometer shows 80 km/h continuously without changing. That's GLB!</p>
+        </div>
+
+
+        <div class="characteristics">
+          <h4>GLB Characteristics:</h4>
+          <ul class="char-list">
+            <li>
+              <strong>Constant velocity</strong> - Does not increase or decrease
+            </li>
+            <li>
+              <strong>Acceleration = 0</strong> - No change in velocity
+            </li>
+            <li>
+              <strong>Distance proportional to time</strong> - The longer it moves, the farther the distance
+            </li>
+            <li>
+              <strong>Straight path</strong> - No turning
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="section">
+        <div class="formula-box">
+          <h4>Main Formula:</h4>
+          <div class="formula">s = v × t</div>
+          <div class="formula-vars">
+            <p><strong>s</strong> = distance traveled (meters)</p>
+            <p><strong>v</strong> = velocity (m/s)</p>
+            <p><strong>t</strong> = time (seconds)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="tips-section">
+          <h4>Tips for Understanding GLB:</h4>
+          <div class="tip-item">
+            <span class="tip-number">1.</span>
+            <strong>Remember the keyword "CONSTANT"</strong> - GLB velocity never changes
+          </div>
+          <div class="tip-item">
+            <span class="tip-number">2.</span>
+            <strong>The v-t graph is a horizontal line</strong> - Because the velocity is constant
+          </div>
+          <div class="tip-item">
+            <span class="tip-number">3.</span>
+            <strong>The s-t graph is a straight diagonal line</strong> - Shows linear relationship
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="topic-card hidden" id="topic-projectile">
+      <h2 class="topic-title">
+        Projectile Motion (Parabolic)
+      </h2>
+
+
+      <div class="section">
+        <h3 class="section-title">Learning Video</h3>
+        <div class="video-container">
+          <iframe 
+            src="https://www.youtube.com/embed/dUpcOfkFThI" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+
+      <div class="section">
+        <h3 class="section-title">Explanation</h3>
+        <div class="explanation">
+          <p>Projectile Motion is the motion of an object thrown at an angle through the air, following a curved (parabolic) path. Examples include a basketball shot, a kicked football, or water from a fountain.</p>
+        </div>
+
+
+        <div class="characteristics">
+          <h4>Projectile Motion Characteristics:</h4>
+          <ul class="char-list">
+            <li>
+              <strong>Parabolic trajectory</strong> - Creates a curved path
+            </li>
+            <li>
+              <strong>Two-dimensional motion</strong> - Has horizontal (x) and vertical (y) components
+            </li>
+            <li>
+              <strong>Constant horizontal velocity</strong> - No acceleration in x-direction
+            </li>
+            <li>
+              <strong>Vertical acceleration = g</strong> - Gravity affects the vertical component
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="section">
+        <div class="formula-box">
+          <h4>📐 Main Formulas:</h4>
+          <div class="formula">R = (v₀² × sin(2θ)) / g</div>
+          <div class="formula">H = (v₀² × sin²(θ)) / (2g)</div>
+          <div class="formula">T = (2v₀ × sin(θ)) / g</div>
+          <div class="formula-vars">
+            <p><strong>R</strong> = Range (horizontal distance)</p>
+            <p><strong>H</strong> = Maximum height</p>
+            <p><strong>T</strong> = Time of flight</p>
+            <p><strong>v₀</strong> = Initial velocity</p>
+            <p><strong>θ</strong> = Launch angle</p>
+            <p><strong>g</strong> = Gravity (9.8 m/s²)</p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="section">
+        <div class="tips-section">
+          <h4>Tips for Understanding Projectile Motion:</h4>
+          <div class="tip-item">
+            <span class="tip-number">1.</span>
+            <strong>45° gives maximum range</strong> - Optimal angle for distance
+          </div>
+          <div class="tip-item">
+            <span class="tip-number">2.</span>
+            <strong>Separate x and y components</strong> - Solve horizontal and vertical independently
+          </div>
+          <div class="tip-item">
+            <span class="tip-number">3.</span>
+            <strong>At peak, vertical velocity = 0</strong> - Only horizontal velocity remains
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Circular Motion Topic -->
+    <div class="topic-card hidden" id="topic-circular">
+      <h2 class="topic-title">
+        Uniform Circular Motion
+      </h2>
+
+      <!-- Learning Video -->
+      <div class="section">
+        <h3 class="section-title">Learning Video</h3>
+        <div class="video-container">
+          <iframe 
+            src="https://www.youtube.com/embed/_ZwjOOKQA08" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+      <!-- Explanation -->
+      <div class="section">
+        <h3 class="section-title">Explanation</h3>
+        <div class="explanation">
+          <p>Uniform Circular Motion is the motion of an object traveling in a circular path at constant speed. Examples include a car turning on a banked curve, satellites orbiting Earth, or a ball on a string being swung in a circle.</p>
+        </div>
+
+        <!-- Characteristics -->
+        <div class="characteristics">
+          <h4>Circular Motion Characteristics:</h4>
+          <ul class="char-list">
+            <li>
+              <strong>Constant speed</strong> - Magnitude of velocity doesn't change
+            </li>
+            <li>
+              <strong>Changing direction</strong> - Velocity direction constantly changes
+            </li>
+            <li>
+              <strong>Centripetal acceleration</strong> - Always points toward the center
+            </li>
+            <li>
+              <strong>Centripetal force required</strong> - Keeps object in circular path
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Main Formulas -->
+      <div class="section">
+        <div class="formula-box">
+          <h4>📐 Main Formulas:</h4>
+          <div class="formula">aᶜ = v² / r</div>
+          <div class="formula">Fᶜ = m × v² / r</div>
+          <div class="formula">tan(θ) = v² / (r × g)</div>
+          <div class="formula-vars">
+            <p><strong>aᶜ</strong> = Centripetal acceleration</p>
+            <p><strong>Fᶜ</strong> = Centripetal force</p>
+            <p><strong>θ</strong> = Banking angle</p>
+            <p><strong>v</strong> = Velocity</p>
+            <p><strong>r</strong> = Radius of circular path</p>
+            <p><strong>m</strong> = Mass</p>
+            <p><strong>g</strong> = Gravity (9.8 m/s²)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="section">
+        <div class="tips-section">
+          <h4>Tips for Understanding Circular Motion:</h4>
+          <div class="tip-item">
+            <span class="tip-number">1.</span>
+            <strong>Centripetal ≠ Centrifugal</strong> - Centripetal is real, centrifugal is apparent
+          </div>
+          <div class="tip-item">
+            <span class="tip-number">2.</span>
+            <strong>Acceleration exists even with constant speed</strong> - Because direction changes
+          </div>
+          <div class="tip-item">
+            <span class="tip-number">3.</span>
+            <strong>Banking reduces friction requirement</strong> - Normal force provides centripetal force
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="container footer">
+    <p><strong>Virtual Physics Lab</strong></p>
+    <p class="muted" style="margin-top: 8px;">Interactive Learning Platform for Classical Mechanics</p>
+    <small style="margin-top: 16px; display: block; opacity: 0.7;">© 2025 Virtual Physics Lab. Built for ITB TPB.</small>
+  </footer>
+
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="scripts/auth.js"></script>
+
+
+  <script>
+    const topicSelect = document.getElementById('topicSelect');
+    const topicCards = document.querySelectorAll('.topic-card');
+
+    topicSelect.addEventListener('change', function() {
+      const selectedTopic = this.value;
+      
+
+      topicCards.forEach(card => {
+        card.classList.add('hidden');
+      });
+
+      const selectedCard = document.getElementById(`topic-${selectedTopic}`);
+      if (selectedCard) {
+        selectedCard.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

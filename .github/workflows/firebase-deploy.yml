@@ -1,0 +1,42 @@
+name: Deploy to Firebase
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  deploy:
+    name: Deploy to Firebase
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'Back_End/functions/package-lock.json'
+
+      - name: Install Functions dependencies
+        run: |
+          cd Back_End/functions
+          npm ci
+
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+          channelId: live
+          projectId: visual-physics-lab
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
