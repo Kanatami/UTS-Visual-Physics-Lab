@@ -77,7 +77,29 @@
       const mS = sliderRow("mu", "Friction μ", "-", 0, 1.0, 0.01, 0.30);
       const gS = sliderRow("g", "Gravity g", "m/s²", 1, 20, 0.01, 9.81);
 
-      panel.append(el("h3", "", TITLE), vS.row, rS.row, bS.row, mS.row, gS.row);
+      const info = el("div", "info-box");
+      info.style.cssText = "background:#f0f4f8;padding:12px;border-radius:10px;margin:16px 0;font-size:13px;line-height:1.6";
+      info.innerHTML = `
+        <strong>About this simulation:</strong><br>
+        This simulates a banked curve where an object moves in circular motion. 
+        Adjust speed and angle to find safe conditions. The ideal bank angle (θ*) 
+        shows the angle needed for friction-free turning at the current speed.
+      `;
+
+      const paramsBox = el("div", "params-box");
+      paramsBox.style.cssText = "background:#fff;padding:12px;border-radius:10px;margin:16px 0;font-size:12px;line-height:1.7;border:1px solid #e2e8f0";
+      paramsBox.innerHTML = `
+        <strong>Parameter Effects:</strong>
+        <ul style="margin:8px 0;padding-left:20px">
+          <li><strong>Speed ↑</strong> → Requires higher bank angle or more friction</li>
+          <li><strong>Radius ↑</strong> → Easier to turn, lower forces needed</li>
+          <li><strong>Bank angle ↑</strong> → Can handle higher speeds safely</li>
+          <li><strong>Friction ↑</strong> → Wider safe speed range</li>
+          <li><strong>Gravity ↑</strong> → Reduces safe speed range</li>
+        </ul>
+      `;
+
+      panel.append(el("h3", "", TITLE), info, paramsBox, vS.row, rS.row, bS.row, mS.row, gS.row);
 
       const btnRow = el("div", "row"); btnRow.style.gap = "12px";
       const startBtn = el("button", "btn primary", "Start");

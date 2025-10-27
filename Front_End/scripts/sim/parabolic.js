@@ -62,12 +62,33 @@
       const panel = el("div", "card"); panel.style.padding = "16px";
       panel.append(el("h3", "", TITLE));
 
+      const info = el("div", "info-box");
+      info.style.cssText = "background:#f0f4f8;padding:12px;border-radius:10px;margin:16px 0;font-size:13px;line-height:1.6";
+      info.innerHTML = `
+        <strong>About this simulation:</strong><br>
+        This shows projectile motion where an object follows a parabolic path. 
+        Adjust initial speed, launch angle, and height to see how they affect 
+        the trajectory, range, and flight time.
+      `;
+
+      const params = el("div", "params-box");
+      params.style.cssText = "background:#fff;padding:12px;border-radius:10px;margin:16px 0;font-size:12px;line-height:1.7;border:1px solid #e2e8f0";
+      params.innerHTML = `
+        <strong>Parameter Effects:</strong>
+        <ul style="margin:8px 0;padding-left:20px">
+          <li><strong>Initial speed ↑</strong> → Longer range and higher trajectory</li>
+          <li><strong>Launch angle ↑</strong> → Higher peak, 45° gives maximum range</li>
+          <li><strong>Initial height ↑</strong> → Longer flight time and range</li>
+          <li><strong>Gravity ↑</strong> → Shorter flight time and reduced range</li>
+        </ul>
+      `;
+
       const vS  = sliderRow("v0", "Initial speed v0", "m/s", 1, 80, 0.5, 25);
       const thS = sliderRow("theta", "Launch angle θ", "deg", 0, 85, 0.5, 45);
       const hS  = numberRow("h0", "Initial height h0", "m", 0, 0.1, 0);
       const gS  = numberRow("g", "Gravity g", "m/s²", 0.1, 0.01, 9.81);
       const scS = numberRow("scale", "Scale", "px/m", 5, 1, 10);
-      panel.append(vS.row, thS.row, hS.row, gS.row, scS.row);
+      panel.append(info, params, vS.row, thS.row, hS.row, gS.row, scS.row);
 
       const btnRow = el("div", "row"); btnRow.style.gap = "12px";
       const startBtn = el("button", "btn primary", "Start");

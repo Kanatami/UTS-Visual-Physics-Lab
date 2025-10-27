@@ -11,9 +11,30 @@
     <nav class="nav">
       <a class="brand" href="index.html">Virtual Physics Lab</a>
       <div class="nav-links">
-        <a href="simulation.html">Simulation</a>
-        <a href="quiz.html">Quiz</a>
-        <a href="materials.html">Materials</a>
+        <div class="dropdown">
+          <a href="simulation.html" class="dropbtn">Simulation</a>
+          <div class="dropdown-content">
+            <a href="simulation.html?sim=projectile">Projectile Motion</a>
+            <a href="simulation.html?sim=circular_motion">Circular Motion</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <a href="quiz.html" class="dropbtn">Quiz</a>
+          <div class="dropdown-content">
+            <a href="quiz.html">All Topics</a>
+            <a href="quiz.html?category=projectile">Projectile Motion</a>
+            <a href="quiz.html?category=circular">Circular Motion</a>
+            <a href="quiz.html?category=energy">Energy</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <a href="materials.html" class="dropbtn">Materials</a>
+          <div class="dropdown-content">
+            <a href="materials.html#topic-glb">Uniform Linear Motion</a>
+            <a href="materials.html#topic-projectile">Projectile Motion</a>
+            <a href="materials.html#topic-circular">Circular Motion</a>
+          </div>
+        </div>
         <a href="about.html">About</a>
       </div>
       <div class="actions">
@@ -29,7 +50,7 @@
   </main>
 
   <footer class="container footer">
-    <small>© Virtual Physics Lab</small>
+    <small>© 2025 Virtual Physics Lab. Created by Ryota Takenaka</small>
   </footer>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -43,15 +64,31 @@
     window.registerSimulation = (def) => { window.SimRegistry[def.key] = def; };
   </script>
 
-
-  <script src="scripts/sim/parabolic.js" defer></script>
-  <script src="scripts/sim/circular_motion.js" defer></script>
+  <script src="scripts/sim/parabolic.js"></script>
+  <script src="scripts/sim/circular_motion.js"></script>
+  
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      const key = new URLSearchParams(location.search).get('sim') || 'projectile';
-      const def = window.SimRegistry[key] || window.SimRegistry['projectile'];
+      const urlParams = new URLSearchParams(window.location.search);
+      const key = urlParams.get('sim') || 'projectile';
+      
+      console.log('Requested simulation key:', key);
+      console.log('Available simulations:', Object.keys(window.SimRegistry));
+      
+      const def = window.SimRegistry[key];
+      if (!def) {
+        console.error('Simulation not found:', key);
+        console.log('Falling back to projectile');
+        const fallback = window.SimRegistry['projectile'];
+        if (fallback) {
+          const mount = document.getElementById('sim-root');
+          fallback.init(mount);
+        }
+        return;
+      }
+      
       const mount = document.getElementById('sim-root');
-      const api = def.init(mount);
+      def.init(mount);
     });
   </script>
 </body>

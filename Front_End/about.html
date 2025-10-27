@@ -5,50 +5,194 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>About - Virtual Physics Lab</title>
   <link rel="stylesheet" href="styles/base.css" />
+  <style>
+    .about-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .about-hero {
+      text-align: center;
+      padding: 48px 24px;
+      margin-bottom: 32px;
+    }
+    .about-hero h1 {
+      font-size: 42px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .about-hero p {
+      font-size: 18px;
+      color: var(--muted);
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin: 32px 0;
+    }
+    .feature-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
+    }
+    .feature-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+    .feature-card h3 {
+      margin: 12px 0;
+      color: var(--accent);
+    }
+    .info-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin: 24px 0;
+      box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
+    }
+    .info-section h2 {
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .info-section ul, .info-section ol {
+      line-height: 1.8;
+    }
+    .info-section li {
+      margin: 8px 0;
+    }
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .tech-badge {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  </style>
 </head>
 <body>
   <header class="site-header container">
-    <nav class="nav">
-      <a class="brand" href="index.html">Virtual Physics Lab</a>
-            <div class="nav-links">
-        <a href="simulation.html">Simulation</a>
-        <a href="quiz.html">Quiz</a>
-        <a href="materials.html">Materials</a>
-        <a href="about.html">About</a>
-      </div>
-      <div class="actions">
-        <a id="loginBtn" href="auth.html" class="btn">Sign In</a>
-        <button id="logoutBtn" class="btn danger" style="display:none;">Sign Out</button>
-        <span id="userInfo" class="muted"></span>
-      </div>
-    </nav>
+          <nav class="nav">
+        <a class="brand" href="index.html">Virtual Physics Lab</a>
+        <div class="nav-links">
+          <div class="dropdown">
+            <a href="simulation.html" class="dropbtn">Simulation</a>
+            <div class="dropdown-content">
+              <a href="simulation.html?sim=projectile">Projectile Motion</a>
+              <a href="simulation.html?sim=circular_motion">Circular Motion</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="quiz.html" class="dropbtn">Quiz</a>
+            <div class="dropdown-content">
+              <a href="quiz.html">All Topics</a>
+              <a href="quiz.html?category=projectile">Projectile Motion</a>
+              <a href="quiz.html?category=circular">Circular Motion</a>
+              <a href="quiz.html?category=energy">Energy</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="materials.html" class="dropbtn">Materials</a>
+            <div class="dropdown-content">
+              <a href="materials.html#topic-glb">Uniform Linear Motion</a>
+              <a href="materials.html#topic-projectile">Projectile Motion</a>
+              <a href="materials.html#topic-circular">Circular Motion</a>
+            </div>
+          </div>
+          <a href="about.html">About</a>
+        </div>
+        <div class="actions">
+          <a id="loginBtn" href="auth.html" class="btn">Sign In</a>
+          <button id="logoutBtn" class="btn danger" style="display:none;">Sign Out</button>
+          <span id="userInfo" class="muted"></span>
+        </div>
+      </nav>
   </header>
 
-  <main class="container grid-2">
-    <section class="card">
-      <h1>Learning Objectives</h1>
+  <main class="about-container">
+    <div class="about-hero">
+      <h1>About Virtual Physics Lab</h1>
+      <p>An interactive web platform for mastering classical mechanics through hands-on simulations and quizzes</p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3>Interactive Simulations</h3>
+        <p>Visualize projectile motion and circular motion with real-time parameter adjustments and instant feedback.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3>Knowledge Assessment</h3>
+        <p>Test your understanding with categorized quizzes covering projectile motion, circular motion, and energy concepts.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3>Learning Materials</h3>
+        <p>Access video tutorials and detailed explanations for uniform linear motion, projectile motion, and circular motion.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">☁️</div>
+        <h3>Cloud Integration</h3>
+        <p>Save your quiz results and simulation data to the cloud with Firebase authentication and Firestore database.</p>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>Learning Objectives</h2>
       <ul>
-        <li>Understand projectile motion parameters: v₀, θ, h₀, g.</li>
-        <li>Experience numerical simulation and visualization in the browser.</li>
-        <li>Use the quiz to check your understanding.</li>
+        <li><strong>Projectile Motion:</strong> Understand the relationship between initial velocity (v₀), launch angle (θ), initial height (h₀), and gravitational acceleration (g).</li>
+        <li><strong>Circular Motion:</strong> Explore centripetal acceleration, banking angles, friction, and safe speed ranges for curved paths.</li>
+        <li><strong>Energy Concepts:</strong> Learn about kinetic energy, potential energy, and energy conservation in mechanical systems.</li>
+        <li><strong>Numerical Simulation:</strong> Experience browser-based physics simulations with real-time visualization and parameter control.</li>
+        <li><strong>Self-Assessment:</strong> Reinforce concepts through interactive quizzes with instant feedback and performance tracking.</li>
       </ul>
-    </section>
-    <section class="card">
-      <h2>How to Use</h2>
+    </div>
+
+    <div class="info-section">
+      <h2>How to Use This Platform</h2>
       <ol>
-        <li>Open <strong>Simulation</strong> and set parameters.</li>
-        <li>Run, observe, and then review the readouts.</li>
-        <li>Try the <strong>Quiz</strong> to reinforce the concepts.</li>
+        <li><strong>Start with Simulations:</strong> Navigate to the Simulation page and choose between Projectile Motion or Circular Motion.</li>
+        <li><strong>Adjust Parameters:</strong> Use sliders to modify initial conditions (speed, angle, height, etc.) and observe how they affect the motion.</li>
+        <li><strong>Analyze Results:</strong> Review the real-time metrics displaying range, flight time, velocity components, and other key values.</li>
+        <li><strong>Watch Tutorials:</strong> Visit the Materials page to watch educational videos and read detailed explanations of physics concepts.</li>
+        <li><strong>Test Your Knowledge:</strong> Take quizzes to assess your understanding and track your progress over time.</li>
+        <li><strong>Save Your Progress:</strong> Sign in with your account to save quiz results and simulation data to the cloud.</li>
       </ol>
-      <details>
-        <summary>Equations (Projectile)</summary>
-        <p>x(t)=v₀cosθ·t, y(t)=h₀+v₀sinθ·t−(1/2)g t²</p>
+    </div>
+
+    <div class="info-section">
+      <h2>Key Physics Equations</h2>
+      <details open>
+        <summary style="cursor: pointer; font-weight: 600; margin-bottom: 12px;">Projectile Motion</summary>
+        <p><strong>Horizontal position:</strong> x(t) = v₀ cos θ · t</p>
+        <p><strong>Vertical position:</strong> y(t) = h₀ + v₀ sin θ · t − ½g t²</p>
+        <p><strong>Range:</strong> R = (v₀² sin 2θ) / g (when h₀ = 0)</p>
+        <p><strong>Maximum height:</strong> h_max = h₀ + (v₀² sin² θ) / (2g)</p>
       </details>
-    </section>
+      <details style="margin-top: 16px;">
+        <summary style="cursor: pointer; font-weight: 600; margin-bottom: 12px;">Circular Motion</summary>
+        <p><strong>Centripetal acceleration:</strong> a_c = v² / r</p>
+        <p><strong>Angular velocity:</strong> ω = v / r</p>
+        <p><strong>Period:</strong> T = 2πr / v</p>
+        <p><strong>Ideal bank angle:</strong> θ = arctan(v² / (rg))</p>
+      </details>
+    </div>
   </main>
 
   <footer class="container footer">
-    <small>© Virtual Physics Lab</small>
+    <small>© 2025 Virtual Physics Lab. Created by Ryota Takenaka</small>
   </footer>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>

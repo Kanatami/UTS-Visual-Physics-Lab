@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sign In - Virtual Physics Lab</title>
+  <title>Sign Up - Virtual Physics Lab</title>
   <link rel="stylesheet" href="styles/base.css" />
   <style>
     body {
@@ -210,26 +210,6 @@
       box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
     }
 
-    .btn-secondary {
-      width: 100%;
-      padding: 14px;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      background: white;
-      color: #4a5568;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      margin-bottom: 12px;
-    }
-
-    .btn-secondary:hover {
-      border-color: #667eea;
-      color: #667eea;
-      background: #f7fafc;
-    }
-
     .btn-link {
       width: 100%;
       padding: 12px;
@@ -307,12 +287,12 @@
 
   <main class="auth-main">
     <div class="auth-container">
-      <h1 class="auth-title">Enter your account!</h1>
-      <p class="auth-subtitle">Let's dive into your fun learning platform for physics concepts</p>
+      <h1 class="auth-title">Create your account!</h1>
+      <p class="auth-subtitle">Join us and start your physics learning journey</p>
 
-      <button id="googleLoginBtn" class="google-btn" type="button">
+      <button id="googleSignupBtn" class="google-btn" type="button">
         <span>🔐</span>
-        <span>Sign in with Google</span>
+        <span>Sign up with Google</span>
       </button>
 
       <div class="divider">or</div>
@@ -325,17 +305,19 @@
 
       <div class="input-group">
         <label>Password</label>
-        <input id="passwordInput" type="password" placeholder="••••••••" />
+        <input id="passwordInput" type="password" placeholder="Minimum 6 characters" />
         <div class="error-message" id="passwordError"></div>
       </div>
 
-      <button class="btn-primary" type="button" id="loginBtn">Login</button>
-      
-      <div class="divider">or</div>
-      
-      <a href="signup.html" class="btn-secondary" style="text-decoration: none; display: block; text-align: center;">Create an account</a>
+      <div class="input-group">
+        <label>Confirm Password</label>
+        <input id="confirmPasswordInput" type="password" placeholder="Re-enter your password" />
+        <div class="error-message" id="confirmPasswordError"></div>
+      </div>
 
-      <a href="#" id="resetPasswordLink" class="btn-link">Forgot password?</a>
+      <button class="btn-primary" type="button" id="signupBtn">Create Account</button>
+
+      <a href="auth.html" class="btn-link">Already have an account? Sign in</a>
 
       <div id="msg"></div>
     </div>
@@ -353,13 +335,14 @@
 
   <script>
     const msg = document.getElementById("msg");
-    const googleLoginBtn = document.getElementById("googleLoginBtn");
-    const loginBtn = document.getElementById("loginBtn");
-    const resetPasswordLink = document.getElementById("resetPasswordLink");
+    const googleSignupBtn = document.getElementById("googleSignupBtn");
+    const signupBtn = document.getElementById("signupBtn");
     const emailInput = document.getElementById("emailInput");
     const passwordInput = document.getElementById("passwordInput");
+    const confirmPasswordInput = document.getElementById("confirmPasswordInput");
     const emailError = document.getElementById("emailError");
     const passwordError = document.getElementById("passwordError");
+    const confirmPasswordError = document.getElementById("confirmPasswordError");
 
     function showError(input, errorElement, message) {
       input.classList.add('error');
@@ -410,20 +393,52 @@
       if (!password) {
         showError(passwordInput, passwordError, 'Password is required');
       } else {
-        clearError(passwordInput, passwordError);
+        const error = validatePassword(password);
+        if (error) {
+          showError(passwordInput, passwordError, error);
+        } else {
+          clearError(passwordInput, passwordError);
+        }
       }
     });
 
     passwordInput.addEventListener('input', () => {
       if (passwordInput.classList.contains('error')) {
         const password = passwordInput.value;
-        if (password) {
+        if (password.length >= 6) {
           clearError(passwordInput, passwordError);
         }
       }
+      if (confirmPasswordInput.value) {
+        validateConfirmPassword();
+      }
     });
 
-    googleLoginBtn.addEventListener("click", async () => {
+    function validateConfirmPassword() {
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+      
+      if (!confirmPassword) {
+        showError(confirmPasswordInput, confirmPasswordError, 'Please confirm your password');
+        return false;
+      } else if (password !== confirmPassword) {
+        showError(confirmPasswordInput, confirmPasswordError, 'Passwords do not match');
+        return false;
+      } else {
+        clearError(confirmPasswordInput, confirmPasswordError);
+        return true;
+      }
+    }
+
+    confirmPasswordInput.addEventListener('blur', validateConfirmPassword);
+
+    confirmPasswordInput.addEventListener('input', () => {
+      if (confirmPasswordInput.classList.contains('error')) {
+        validateConfirmPassword();
+      }
+    });
+
+    googleSignupBtn.addEventListener("click", async () => {
       try {
         const provider = new firebase.auth.GoogleAuthProvider();
         const result = await firebase.auth().signInWithPopup(provider);
@@ -433,19 +448,21 @@
           email: result.user.email,
           displayName: result.user.displayName,
           authProvider: 'google.com',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           lastLogin: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
 
         showMessage('Success! Redirecting...', 'success');
         setTimeout(() => location.href = 'index.html', 1000);
       } catch (error) {
-        alert('Google login failed: ' + error.message);
+        alert('Google sign up failed: ' + error.message);
       }
     });
 
-    loginBtn.addEventListener("click", async () => {
+    signupBtn.addEventListener("click", async () => {
       const email = emailInput.value.trim();
       const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
 
       let hasError = false;
 
@@ -466,7 +483,23 @@
         showError(passwordInput, passwordError, 'Password is required');
         hasError = true;
       } else {
-        clearError(passwordInput, passwordError);
+        const passwordValidation = validatePassword(password);
+        if (passwordValidation) {
+          showError(passwordInput, passwordError, passwordValidation);
+          hasError = true;
+        } else {
+          clearError(passwordInput, passwordError);
+        }
+      }
+
+      if (!confirmPassword) {
+        showError(confirmPasswordInput, confirmPasswordError, 'Please confirm your password');
+        hasError = true;
+      } else if (password !== confirmPassword) {
+        showError(confirmPasswordInput, confirmPasswordError, 'Passwords do not match');
+        hasError = true;
+      } else {
+        clearError(confirmPasswordInput, confirmPasswordError);
       }
 
       if (hasError) {
@@ -474,28 +507,9 @@
       }
 
       try {
-        await loginWithEmail(email, password);
-        showMessage('Login successful!', 'success');
+        await registerWithEmail(email, password);
+        showMessage('Registration successful!', 'success');
         setTimeout(() => location.href = 'index.html', 1000);
-      } catch (error) {
-        showError(emailInput, emailError, error.message);
-      }
-    });
-
-    resetPasswordLink.addEventListener("click", async (e) => {
-      e.preventDefault();
-      const email = emailInput.value.trim();
-
-      if (!email) {
-        showError(emailInput, emailError, 'Please enter your email address first');
-        return;
-      }
-
-      clearError(emailInput, emailError);
-
-      try {
-        await resetPassword(email);
-        showMessage('Password reset email sent successfully', 'success');
       } catch (error) {
         alert(error.message);
       }

@@ -8,20 +8,41 @@
 </head>
 <body>
   <header class="site-header container">
-    <nav class="nav">
-      <a class="brand" href="index.html">Virtual Physics Lab</a>
-            <div class="nav-links">
-        <a href="simulation.html">Simulation</a>
-        <a href="quiz.html">Quiz</a>
-        <a href="materials.html">Materials</a>
-        <a href="about.html">About</a>
-      </div>
-      <div class="actions">
-        <a id="loginBtn" href="auth.html" class="btn">Sign In</a>
-        <button id="logoutBtn" class="btn danger" style="display:none;">Sign Out</button>
-        <span id="userInfo" class="muted"></span>
-      </div>
-    </nav>
+          <nav class="nav">
+        <a class="brand" href="index.html">Virtual Physics Lab</a>
+        <div class="nav-links">
+          <div class="dropdown">
+            <a href="simulation.html" class="dropbtn">Simulation</a>
+            <div class="dropdown-content">
+              <a href="simulation.html?sim=projectile">Projectile Motion</a>
+              <a href="simulation.html?sim=circular_motion">Circular Motion</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="quiz.html" class="dropbtn">Quiz</a>
+            <div class="dropdown-content">
+              <a href="quiz.html">All Topics</a>
+              <a href="quiz.html?category=projectile">Projectile Motion</a>
+              <a href="quiz.html?category=circular">Circular Motion</a>
+              <a href="quiz.html?category=energy">Energy</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="materials.html" class="dropbtn">Materials</a>
+            <div class="dropdown-content">
+              <a href="materials.html#topic-glb">Uniform Linear Motion</a>
+              <a href="materials.html#topic-projectile">Projectile Motion</a>
+              <a href="materials.html#topic-circular">Circular Motion</a>
+            </div>
+          </div>
+          <a href="about.html">About</a>
+        </div>
+        <div class="actions">
+          <a id="loginBtn" href="auth.html" class="btn">Sign In</a>
+          <button id="logoutBtn" class="btn danger" style="display:none;">Sign Out</button>
+          <span id="userInfo" class="muted"></span>
+        </div>
+      </nav>
   </header>
 
   <main class="container">
@@ -52,11 +73,12 @@
   </main>
 
   <footer class="container footer">
-    <small>© Virtual Physics Lab</small>
+    <small>© 2025 Virtual Physics Lab. Created by Ryota Takenaka</small>
   </footer>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="scripts/auth.js"></script>
   <script src="scripts/cloud.js"></script>
   <script src="scripts/quiz.js" defer></script>

@@ -280,9 +280,30 @@
       <nav class="nav">
         <a class="brand" href="index.html">Virtual Physics Lab</a>
         <div class="nav-links">
-          <a href="simulation.html">Simulation</a>
-          <a href="quiz.html">Quiz</a>
-          <a href="materials.html">Materials</a>
+          <div class="dropdown">
+            <a href="simulation.html" class="dropbtn">Simulation</a>
+            <div class="dropdown-content">
+              <a href="simulation.html?sim=projectile">Projectile Motion</a>
+              <a href="simulation.html?sim=circular_motion">Circular Motion</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="quiz.html" class="dropbtn">Quiz</a>
+            <div class="dropdown-content">
+              <a href="quiz.html">All Topics</a>
+              <a href="quiz.html?category=projectile">Projectile Motion</a>
+              <a href="quiz.html?category=circular">Circular Motion</a>
+              <a href="quiz.html?category=energy">Energy</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="materials.html" class="dropbtn">Materials</a>
+            <div class="dropdown-content">
+              <a href="materials.html#topic-glb">Uniform Linear Motion</a>
+              <a href="materials.html#topic-projectile">Projectile Motion</a>
+              <a href="materials.html#topic-circular">Circular Motion</a>
+            </div>
+          </div>
           <a href="about.html">About</a>
         </div>
         <div class="actions">
@@ -353,7 +374,7 @@
     <footer class="footer">
       <p><strong>Virtual Physics Lab</strong></p>
       <p class="muted" style="margin-top: 8px;">Interactive Learning Platform for Classical Mechanics</p>
-      <small style="margin-top: 16px; display: block; opacity: 0.7;">© 2025 Virtual Physics Lab. Built for ITB TPB.</small>
+      <small style="margin-top: 16px; display: block; opacity: 0.7;">© 2025 Virtual Physics Lab. Created by Ryota Takenaka</small>
     </footer>
   </div>
 

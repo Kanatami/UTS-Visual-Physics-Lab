@@ -209,8 +209,7 @@
           total: questions.length,
           percentage: percentage,
           answers: answers,
-          timestamp: new Date().toISOString(),
-          completedAt: firebase.firestore.Timestamp.now()
+          timestamp: new Date().toISOString()
         };
         
         await window.saveQuizResultToCloud(quizData);
@@ -228,6 +227,15 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryFromUrl = urlParams.get('category');
+    
+    if (categoryFromUrl && questionBank[categoryFromUrl]) {
+      switchCategory(categoryFromUrl);
+    } else if (categoryFromUrl === null) {
+      switchCategory('all');
+    }
+    
     document.querySelectorAll('.category-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         switchCategory(btn.dataset.category);
