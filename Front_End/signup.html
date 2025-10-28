@@ -275,7 +275,7 @@
   <header class="auth-header">
     <div class="container">
       <nav class="auth-nav">
-        <a class="auth-brand" href="index.html">Virtual Physics Lab</a>
+        <a class="auth-brand" href="home.html">Virtual Physics Lab</a>
         <div class="auth-nav-links">
           <a href="simulation.html">Simulation</a>
           <a href="quiz.html">Quiz</a>
@@ -453,7 +453,7 @@
         }, { merge: true });
 
         showMessage('Success! Redirecting...', 'success');
-        setTimeout(() => location.href = 'index.html', 1000);
+        setTimeout(() => location.href = 'home.html', 1000);
       } catch (error) {
         alert('Google sign up failed: ' + error.message);
       }
@@ -509,7 +509,7 @@
       try {
         await registerWithEmail(email, password);
         showMessage('Registration successful!', 'success');
-        setTimeout(() => location.href = 'index.html', 1000);
+        setTimeout(() => location.href = 'home.html', 1000);
       } catch (error) {
         alert(error.message);
       }
@@ -517,7 +517,7 @@
 
     firebase.auth().onAuthStateChanged(user => {
       if (user && !msg.classList.contains('success')) {
-        location.href = 'index.html';
+        location.href = 'home.html';
       }
     });
   </script>

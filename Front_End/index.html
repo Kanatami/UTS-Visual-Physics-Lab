@@ -3,255 +3,202 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Virtual Physics Lab - Interactive Learning</title>
+  <title>Virtual Physics Lab - Welcome</title>
   <link rel="stylesheet" href="styles/base.css" />
   <style>
     :root {
-      --accent-sim: #4f7cff;
-      --accent-quiz: #ff6b6b;
-      --accent-info: #4ecdc4;
-      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --accent-primary: #e74c3c;
+      --accent-secondary: #c0392b;
+      --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     }
 
     body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: radial-gradient(ellipse at top, #f4f7fb 0%, var(--bg) 50%);
-    }
-
-    .site-header {
-      padding-top: 16px;
-    }
-
-    .nav {
-      padding: 16px 24px;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    }
-
-    .nav .actions {
+      min-height: 100vh;
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: center;
     }
 
-    .nav #userInfo {
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .brand {
-      font-size: 20px;
-      font-weight: 800;
-      background: var(--gradient-1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .hero {
-      margin-top: 40px;
-      padding: 64px 48px;
-      text-align: center;
-      background: var(--card);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(79, 124, 255, 0.1) 0%, transparent 70%);
-      border-radius: 50%;
-    }
-
-    .hero h1 {
-      font-size: clamp(36px, 5vw, 56px);
-      margin: 0 0 16px;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-    }
-
-    .hero .subtitle {
-      font-size: 18px;
-      color: var(--muted);
-      margin-bottom: 32px;
+    .landing-container {
       max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .landing-right {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      width: 100%;
+    }
+
+    .landing-header {
+      text-align: center;
+    }
+
+    .landing-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent-primary);
+      margin-bottom: 24px;
+      padding: 8px 16px;
+      background: rgba(231, 76, 60, 0.1);
+      border-radius: 12px;
+      width: fit-content;
       margin-left: auto;
       margin-right: auto;
     }
 
-    .hero .actions {
-      gap: 16px;
-      justify-content: center;
+    .landing-title {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0 0 16px;
+      background: var(--gradient-bg);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
     }
 
-    .btn-hero {
-      padding: 16px 32px;
+    .landing-subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .landing-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 18px 32px;
       font-size: 16px;
       font-weight: 600;
       border-radius: 16px;
-      transition: all 0.3s ease;
-    }
-
-    .btn-hero.primary {
-      background: var(--gradient-1);
-      color: white;
-      box-shadow: 0 8px 24px rgba(79, 124, 255, 0.3);
-    }
-
-    .btn-hero.primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(79, 124, 255, 0.4);
-    }
-
-    .modules-section {
-      margin-top: 64px;
-      margin-bottom: 64px;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .section-header h2 {
-      font-size: 32px;
-      margin: 0 0 8px;
-    }
-
-    .modules-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 32px;
-    }
-
-    .module-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 32px;
       text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 8px 8px 20px var(--shadow-dark), -8px -8px 20px var(--shadow-light);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.3s ease;
+      box-shadow: 
+        8px 8px 20px var(--shadow-dark),
+        -8px -8px 20px var(--shadow-light);
+      border: none;
+      cursor: pointer;
       position: relative;
       overflow: hidden;
     }
 
-    .module-card::before {
+    .action-btn::before {
       content: '';
       position: absolute;
       top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: var(--accent-color);
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
     }
 
-    .module-card:hover::before {
-      transform: scaleX(1);
+    .action-btn:hover::before {
+      left: 100%;
     }
 
-    .module-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 12px 12px 28px var(--shadow-dark), -12px -12px 28px var(--shadow-light);
+    .btn-primary {
+      background: var(--accent-primary);
+      color: white;
     }
 
-    .module-card.simulation {
-      --accent-color: var(--accent-sim);
+    .btn-primary:hover {
+      background: var(--accent-secondary);
+      transform: translateY(-2px);
+      box-shadow: 
+        12px 12px 28px var(--shadow-dark),
+        -12px -12px 28px var(--shadow-light);
     }
 
-    .module-card.circular {
-      --accent-color: var(--accent-info);
-    }
-
-    .module-card.quiz {
-      --accent-color: var(--accent-quiz);
-    }
-
-    .module-card.about {
-      --accent-color: #ffa502;
-    }
-
-    .module-card.materials {
-      --accent-color: #9b59b6;
-    }
-
-    .module-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      margin-bottom: 20px;
+    .btn-secondary {
       background: var(--card);
-      box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
-    }
-
-    .module-card h3 {
-      font-size: 22px;
-      margin: 0 0 12px;
       color: var(--tx);
     }
 
-    .module-card p {
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.6;
-      margin: 0 0 20px;
-      flex-grow: 1;
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        12px 12px 28px var(--shadow-dark),
+        -12px -12px 28px var(--shadow-light);
     }
 
-    .module-link {
-      display: inline-flex;
+    .btn-tertiary {
+      background: transparent;
+      color: var(--tx);
+      box-shadow: none;
+      border: 2px solid var(--muted);
+    }
+
+    .btn-tertiary:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      transform: translateY(-2px);
+    }
+
+    .divider {
+      display: flex;
       align-items: center;
-      gap: 8px;
-      color: var(--accent-color);
-      font-weight: 600;
+      gap: 16px;
+      color: var(--muted);
       font-size: 14px;
-      text-decoration: none;
-      margin-top: auto;
     }
 
-    .module-link::after {
-      content: '→';
-      transition: transform 0.3s ease;
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--muted);
+      opacity: 0.3;
     }
 
-    .module-card:hover .module-link::after {
-      transform: translateX(4px);
-    }
-
-
-    .footer {
-      background: var(--card);
-      padding: 32px;
+    .footer-note {
       text-align: center;
-      border-radius: 20px 20px 0 0;
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 40px;
+      padding: 20px;
     }
 
-
-    @media (max-width: 768px) {
-      .modules-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding: 40px 24px;
-      }
+    .footer-note a {
+      color: var(--accent-primary);
+      text-decoration: none;
+      font-weight: 600;
     }
 
+    .footer-note a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 968px) {
+      .landing-container {
+        padding: 20px;
+      }
+    }
 
     @keyframes fadeInUp {
       from {
@@ -264,124 +211,47 @@
       }
     }
 
-    .module-card {
+    .landing-right > * {
       animation: fadeInUp 0.6s ease backwards;
     }
 
-    .module-card:nth-child(1) { animation-delay: 0.1s; }
-    .module-card:nth-child(2) { animation-delay: 0.2s; }
-    .module-card:nth-child(3) { animation-delay: 0.3s; }
-    .module-card:nth-child(4) { animation-delay: 0.4s; }
+    .landing-header { animation-delay: 0.1s; }
+    .landing-actions { animation-delay: 0.2s; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header class="site-header">
-      <nav class="nav">
-        <a class="brand" href="index.html">Virtual Physics Lab</a>
-        <div class="nav-links">
-          <div class="dropdown">
-            <a href="simulation.html" class="dropbtn">Simulation</a>
-            <div class="dropdown-content">
-              <a href="simulation.html?sim=projectile">Projectile Motion</a>
-              <a href="simulation.html?sim=circular_motion">Circular Motion</a>
-            </div>
-          </div>
-          <div class="dropdown">
-            <a href="quiz.html" class="dropbtn">Quiz</a>
-            <div class="dropdown-content">
-              <a href="quiz.html">All Topics</a>
-              <a href="quiz.html?category=projectile">Projectile Motion</a>
-              <a href="quiz.html?category=circular">Circular Motion</a>
-              <a href="quiz.html?category=energy">Energy</a>
-            </div>
-          </div>
-          <div class="dropdown">
-            <a href="materials.html" class="dropbtn">Materials</a>
-            <div class="dropdown-content">
-              <a href="materials.html#topic-glb">Uniform Linear Motion</a>
-              <a href="materials.html#topic-projectile">Projectile Motion</a>
-              <a href="materials.html#topic-circular">Circular Motion</a>
-            </div>
-          </div>
-          <a href="about.html">About</a>
+  <div class="landing-container">
+    <div class="landing-right">
+      <div class="landing-header">
+        <div class="landing-logo">
+          🔬 Physics Lab
         </div>
-        <div class="actions">
-          <a id="loginBtn" href="auth.html" class="btn">Sign In</a>
-          <button id="logoutBtn" class="btn danger" style="display:none;">Sign Out</button>
-          <span id="userInfo" class="muted"></span>
-        </div>
-      </nav>
-    </header>
-
-    <section class="hero card">
-      <h1>Experience Physics in<br/>Your Browser</h1>
-      <p class="subtitle">Interactive simulations and quizzes to master classical mechanics through hands-on learning</p>
-      <div class="actions">
-        <a class="btn-hero primary" href="simulation.html">Start Learning</a>
-        <a class="btn-hero" href="quiz.html">Test Your Knowledge</a>
-      </div>
-    </section>
-
-    <main class="modules-section">
-      <div class="section-header">
-        <h2>Learning Modules</h2>
-        <p class="muted">Choose a topic to begin your physics journey</p>
+        <h1 class="landing-title">Fun with Physics!</h1>
+        <p class="landing-subtitle">
+          Interactive web-based physics laboratory for learning classical mechanics through simulations and quizzes.
+        </p>
       </div>
 
-      <div class="modules-grid">
-        <!-- Simulations -->
-        <a class="module-card simulation" href="simulation.html">
-          <div class="module-icon">📈</div>
-          <h3>Projectile Motion</h3>
-          <p>Master parabolic trajectories with interactive, real-time simulations. Adjust initial velocity, angle, and height to see how projectiles behave.</p>
-          <span class="module-link">Launch Simulation</span>
+      <div class="landing-actions">
+        <a href="home.html" class="action-btn btn-primary">
+          Get started
+        </a>
+        
+        <div class="divider">or</div>
+
+        <a href="auth.html" class="action-btn btn-secondary">
+          I already have an account
         </a>
 
-        <a class="module-card circular" href="simulation.html?sim=circular_motion">
-          <div class="module-icon">⭕</div>
-          <h3>Circular Motion</h3>
-          <p>Explore banked curves, centripetal acceleration, and ideal banking angles in uniform circular motion.</p>
-          <span class="module-link">Launch Simulation</span>
-        </a>
-
-        <!-- Learning Materials -->
-        <a class="module-card materials" href="materials.html">
-          <div class="module-icon">📚</div>
-          <h3>Learning Materials</h3>
-          <p>Study physics concepts with video tutorials, detailed explanations, formulas, and tips for better understanding.</p>
-          <span class="module-link">Start Learning</span>
-        </a>
-
-        <!-- Quiz -->
-        <a class="module-card quiz" href="quiz.html">
-          <div class="module-icon">📝</div>
-          <h3>Physics Quiz</h3>
-          <p>Test your understanding of projectile motion basics with interactive questions and instant feedback.</p>
-          <span class="module-link">Take Quiz</span>
-        </a>
-
-        <!-- About -->
-        <a class="module-card about" href="about.html">
-          <div class="module-icon">ℹ️</div>
-          <h3>About & Guide</h3>
-          <p>Learn about the underlying equations, how to use the simulations, and the educational goals of this platform.</p>
-          <span class="module-link">Learn More</span>
+        <a href="signup.html" class="action-btn btn-tertiary">
+          Make an account!
         </a>
       </div>
-    </main>
 
-    <footer class="footer">
-      <p><strong>Virtual Physics Lab</strong></p>
-      <p class="muted" style="margin-top: 8px;">Interactive Learning Platform for Classical Mechanics</p>
-      <small style="margin-top: 16px; display: block; opacity: 0.7;">© 2025 Virtual Physics Lab. Created by Ryota Takenaka</small>
-    </footer>
+      <div class="footer-note">
+        © 2025 Virtual Physics Lab | Created by <a href="https://github.com/Kanatami" target="_blank">Ryota Takenaka</a>
+      </div>
+    </div>
   </div>
-
-  <!-- Firebase + Auth -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="scripts/auth.js"></script>
-  <script src="scripts/main.js" defer></script>
 </body>
 </html>

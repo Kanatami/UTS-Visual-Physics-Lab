@@ -5,7 +5,6 @@
     "public": "Front_End",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
-      { "source": "/", "destination": "/landing.html" },
       { "source": "/api/**", "function": "api" }
     ]
   },
