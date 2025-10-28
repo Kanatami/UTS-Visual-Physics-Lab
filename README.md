@@ -6,6 +6,13 @@
 ## Overview
 Interactive web-based physics laboratory for learning classical mechanics through simulations and quizzes. Includes projectile (parabolic) motion and circular motion simulations, quizzes with scoring, and authenticated user history.
 
+**User Flow**: Users first land on a welcome page (`landing.html`) with options to:
+- Get started (browse without account)
+- Sign in (existing users)
+- Create account (new users)
+
+After authentication, users can access simulations, quizzes, and view their learning history.
+
 ## How to Run
 
 ### 1. Install Dependencies (Functions)
@@ -44,7 +51,7 @@ node server.js
 - Server: http://localhost:3000
 - API Docs: http://localhost:3000/api-docs
 
-## ## Project Structure
+## Project Structure
 The following is the complete structure under `midterm-VPL/`. Files listed in `.gitignore` are excluded.
 
 ```
@@ -65,6 +72,8 @@ midterm-VPL/
 │       ├── package.json
 │       └── server.js
 ├── Front_End/
+│   ├── landing.html       # Welcome/entry page (new!)
+│   ├── index.html         # Main dashboard
 │   ├── about.html
 │   ├── auth.html
 │   ├── history.html
